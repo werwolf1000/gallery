@@ -1,0 +1,2341 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Админ-панель | Галерея Пространств</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #F2F2F0;
+            font-family: 'Inter', sans-serif;
+            color: #1A1C1E;
+            line-height: 1.2;
+            min-height: 100vh;
+        }
+
+        :root {
+            --graphite: #1A1C1E;
+            --light-gray-bg: #F2F2F0;
+            --gold-matte: #C5A267;
+            --gold-matte-light: rgba(197, 162, 103, 0.2);
+            --card-white: #FFFFFF;
+            --danger: #e74c3c;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --info: #3498db;
+        }
+
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 48px;
+        }
+
+        /* ===== ШАПКА ===== */
+        .header {
+            padding: 20px 0 16px;
+            border-bottom: 1px solid rgba(26, 28, 30, 0.08);
+            background-color: var(--light-gray-bg);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo-area h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: var(--graphite);
+        }
+
+        .logo-area h1 span {
+            color: var(--gold-matte);
+            font-weight: 300;
+        }
+
+        .logo-area p {
+            font-size: 0.6rem;
+            letter-spacing: 3px;
+            color: var(--gold-matte);
+            font-weight: 500;
+            margin-top: 2px;
+        }
+
+        .logo-area a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .right-actions {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .user-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 100%;
+            background: var(--gold-matte);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--graphite);
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .user-avatar:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            border: 1px solid var(--graphite);
+            padding: 6px 20px;
+            font-weight: 500;
+            border-radius: 40px;
+            color: var(--graphite);
+            cursor: pointer;
+            transition: 0.2s;
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+        .btn-ghost:hover {
+            background: var(--graphite);
+            color: white;
+        }
+
+        /* ===== АДМИН-МЕНЮ ===== */
+        .admin-menu {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(26, 28, 30, 0.05);
+        }
+
+        .admin-menu a {
+            padding: 8px 20px;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.85rem;
+            color: #666;
+            transition: 0.2s;
+            border: 1.5px solid transparent;
+        }
+
+        .admin-menu a:hover {
+            background: var(--gold-matte-light);
+            color: var(--graphite);
+        }
+
+        .admin-menu a.active {
+            background: var(--graphite);
+            color: white;
+            border-color: var(--graphite);
+        }
+
+        .admin-menu a i {
+            margin-right: 8px;
+        }
+
+        /* ===== ОСНОВНОЙ КОНТЕНТ ===== */
+        .admin-wrapper {
+            padding: 40px 0 60px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .page-header h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .page-header h2 small {
+            font-weight: 400;
+            font-size: 1rem;
+            color: #888;
+        }
+
+        .page-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn-gold {
+            background: var(--gold-matte);
+            border: none;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--graphite);
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-gold:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(197, 162, 103, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1.5px solid #ddd;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-weight: 500;
+            font-size: 0.85rem;
+            color: #666;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--gold-matte);
+            color: var(--graphite);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            border: none;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-danger:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: var(--success);
+            border: none;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-success:hover {
+            background: #219a52;
+            transform: translateY(-2px);
+        }
+
+        /* ===== СТРАНИЦЫ (вкладки) ===== */
+        .admin-page {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .admin-page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ============================================= */
+        /* 1. ОБРАБОТКА ЗАКАЗОВ */
+        /* ============================================= */
+        .orders-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px 24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0, 0, 0, 0.02);
+        }
+
+        .stat-card .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .stat-card .stat-label {
+            font-size: 0.85rem;
+            color: #888;
+            margin-top: 4px;
+        }
+
+        .stat-card .stat-icon {
+            float: right;
+            font-size: 1.8rem;
+            color: var(--gold-matte-light);
+        }
+
+        .stat-card.pending .stat-number { color: var(--warning); }
+        .stat-card.active .stat-number { color: var(--info); }
+        .stat-card.completed .stat-number { color: var(--success); }
+        .stat-card.cancelled .stat-number { color: var(--danger); }
+
+        .orders-table-wrap {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0, 0, 0, 0.02);
+        }
+
+        .orders-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .orders-table th {
+            text-align: left;
+            padding: 16px 20px;
+            background: #f8f7f5;
+            font-weight: 600;
+            color: #555;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .orders-table td {
+            padding: 14px 20px;
+            border-top: 1px solid #f0eee9;
+            vertical-align: middle;
+        }
+
+        .orders-table tr:hover td {
+            background: #faf9f7;
+        }
+
+        .status-badge {
+            padding: 4px 14px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-badge.pending { background: #fff3cd; color: #856404; }
+        .status-badge.active { background: #cce5ff; color: #004085; }
+        .status-badge.completed { background: #d4edda; color: #155724; }
+        .status-badge.cancelled { background: #f8d7da; color: #721c24; }
+
+        .order-actions-small {
+            display: flex;
+            gap: 6px;
+        }
+
+        .order-actions-small button {
+            padding: 4px 12px;
+            border-radius: 40px;
+            border: none;
+            font-size: 0.7rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .order-actions-small .btn-edit {
+            background: var(--gold-matte-light);
+            color: var(--gold-matte);
+        }
+        .order-actions-small .btn-edit:hover {
+            background: var(--gold-matte);
+            color: var(--graphite);
+        }
+        .order-actions-small .btn-delete {
+            background: #f8d7da;
+            color: var(--danger);
+        }
+        .order-actions-small .btn-delete:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        /* ============================================= */
+        /* 2. ПОЛЬЗОВАТЕЛИ */
+        /* ============================================= */
+        .users-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .user-card {
+            background: white;
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0, 0, 0, 0.02);
+            transition: 0.2s;
+        }
+
+        .user-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.06);
+        }
+
+        .user-card .user-avatar-big {
+            width: 64px;
+            height: 64px;
+            border-radius: 100%;
+            background: var(--gold-matte-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--gold-matte);
+            margin-bottom: 16px;
+        }
+
+        .user-card .user-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .user-card .user-email {
+            font-size: 0.85rem;
+            color: #888;
+            margin: 4px 0 12px;
+        }
+
+        .user-card .user-info {
+            display: flex;
+            gap: 16px;
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .user-card .user-info i {
+            color: var(--gold-matte);
+            width: 16px;
+        }
+
+        .user-card .user-actions {
+            margin-top: 16px;
+            display: flex;
+            gap: 8px;
+            padding-top: 16px;
+            border-top: 1px solid #f0eee9;
+        }
+
+        .user-card .user-actions button {
+            padding: 6px 16px;
+            border-radius: 40px;
+            border: none;
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+            flex: 1;
+        }
+
+        .user-card .user-actions .btn-block {
+            background: #f8d7da;
+            color: var(--danger);
+        }
+        .user-card .user-actions .btn-block:hover {
+            background: var(--danger);
+            color: white;
+        }
+        .user-card .user-actions .btn-edit-user {
+            background: var(--gold-matte-light);
+            color: var(--gold-matte);
+        }
+        .user-card .user-actions .btn-edit-user:hover {
+            background: var(--gold-matte);
+            color: var(--graphite);
+        }
+
+        /* ============================================= */
+        /* 3. ОПРОСЫ КЛИЕНТОВ */
+        /* ============================================= */
+        .surveys-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 24px;
+        }
+
+        .survey-card {
+            background: white;
+            border-radius: 24px;
+            padding: 28px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0, 0, 0, 0.02);
+            transition: 0.2s;
+        }
+
+        .survey-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.06);
+        }
+
+        .survey-card .survey-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .survey-card .survey-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .survey-card .survey-status {
+            padding: 3px 12px;
+            border-radius: 40px;
+            font-size: 0.65rem;
+            font-weight: 600;
+        }
+
+        .survey-card .survey-status.active {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .survey-card .survey-status.inactive {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .survey-card .survey-status.draft {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .survey-card .survey-desc {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+            line-height: 1.4;
+        }
+
+        .survey-card .survey-meta {
+            display: flex;
+            gap: 20px;
+            font-size: 0.8rem;
+            color: #888;
+            padding-top: 16px;
+            border-top: 1px solid #f0eee9;
+        }
+
+        .survey-card .survey-meta i {
+            color: var(--gold-matte);
+            width: 16px;
+        }
+
+        .survey-card .survey-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #f0eee9;
+        }
+
+        .survey-card .survey-actions button {
+            padding: 6px 16px;
+            border-radius: 40px;
+            border: none;
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+            flex: 1;
+        }
+
+        .survey-card .survey-actions .btn-edit-survey {
+            background: var(--gold-matte-light);
+            color: var(--gold-matte);
+        }
+        .survey-card .survey-actions .btn-edit-survey:hover {
+            background: var(--gold-matte);
+            color: var(--graphite);
+        }
+
+        .survey-card .survey-actions .btn-results {
+            background: #cce5ff;
+            color: #004085;
+        }
+        .survey-card .survey-actions .btn-results:hover {
+            background: var(--info);
+            color: white;
+        }
+
+        .survey-card .survey-actions .btn-delete-survey {
+            background: #f8d7da;
+            color: var(--danger);
+        }
+        .survey-card .survey-actions .btn-delete-survey:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        /* ===== ФОРМА СОЗДАНИЯ ОПРОСА ===== */
+        .survey-editor {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .survey-editor.active {
+            display: block;
+        }
+
+        .survey-editor-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+
+        .survey-form {
+            background: white;
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0, 0, 0, 0.02);
+        }
+
+        .survey-form .form-group {
+            margin-bottom: 18px;
+        }
+
+        .survey-form .form-group label {
+            display: block;
+            font-weight: 500;
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+            color: var(--graphite);
+        }
+
+        .survey-form .form-group input,
+        .survey-form .form-group select,
+        .survey-form .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 14px;
+            border: 1.5px solid #e8e6e2;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            transition: 0.2s;
+            background: #faf9f7;
+            outline: none;
+        }
+
+        .survey-form .form-group input:focus,
+        .survey-form .form-group select:focus,
+        .survey-form .form-group textarea:focus {
+            border-color: var(--gold-matte);
+            box-shadow: 0 0 0 4px rgba(197, 162, 103, 0.1);
+            background: white;
+        }
+
+        .survey-form .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .survey-form .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .survey-preview {
+            background: white;
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0, 0, 0, 0.02);
+            position: sticky;
+            top: 140px;
+            align-self: start;
+        }
+
+        .survey-preview .preview-survey {
+            background: #faf9f7;
+            border-radius: 20px;
+            padding: 28px;
+            border: 1px solid #f0eee9;
+        }
+
+        .survey-preview .preview-survey .ps-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .survey-preview .preview-survey .ps-desc {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        .survey-preview .preview-survey .ps-question {
+            background: white;
+            border-radius: 16px;
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            border: 1px solid #e8e6e2;
+        }
+
+        .survey-preview .preview-survey .ps-question .pq-text {
+            font-weight: 500;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+
+        .survey-preview .preview-survey .ps-question .pq-options {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .survey-preview .preview-survey .ps-question .pq-options label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85rem;
+            color: #555;
+            cursor: pointer;
+        }
+
+        .survey-preview .preview-survey .ps-question .pq-options input[type="radio"] {
+            accent-color: var(--gold-matte);
+            width: 16px;
+            height: 16px;
+        }
+
+        .survey-preview .preview-survey .ps-question .pq-options input[type="text"] {
+            padding: 8px 12px;
+            border-radius: 12px;
+            border: 1.5px solid #e8e6e2;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            width: 100%;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .survey-preview .preview-survey .ps-question .pq-options input[type="text"]:focus {
+            border-color: var(--gold-matte);
+            box-shadow: 0 0 0 3px rgba(197, 162, 103, 0.1);
+        }
+
+        /* ============================================= */
+        /* 4. НАСТРОЙКА КАРТОЧЕК НЕДВИЖИМОСТИ */
+        /* ============================================= */
+        .properties-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .property-card-item {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0, 0, 0, 0.02);
+            transition: 0.2s;
+            cursor: pointer;
+        }
+
+        .property-card-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+            border-color: var(--gold-matte);
+        }
+
+        .property-card-item .pci-img {
+            width: 100%;
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .property-card-item .pci-img .pci-status {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            padding: 4px 14px;
+            border-radius: 40px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: var(--graphite);
+            background: var(--gold-matte);
+        }
+
+        .property-card-item .pci-body {
+            padding: 20px 24px 24px;
+        }
+
+        .property-card-item .pci-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .property-card-item .pci-address {
+            font-size: 0.85rem;
+            color: #888;
+            margin-bottom: 12px;
+        }
+
+        .property-card-item .pci-details {
+            display: flex;
+            gap: 16px;
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .property-card-item .pci-details i {
+            color: var(--gold-matte);
+            width: 16px;
+        }
+
+        .property-card-item .pci-price {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin: 12px 0 4px;
+        }
+
+        .property-card-item .pci-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 16px;
+            border-top: 1px solid #f0eee9;
+            margin-top: 12px;
+        }
+
+        .property-card-item .pci-footer .pci-date {
+            font-size: 0.75rem;
+            color: #aaa;
+        }
+
+        .property-card-item .pci-footer .pci-actions {
+            display: flex;
+            gap: 6px;
+        }
+
+        .property-card-item .pci-footer .pci-actions button {
+            padding: 4px 14px;
+            border-radius: 40px;
+            border: none;
+            font-size: 0.7rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .property-card-item .pci-footer .pci-actions .pci-edit {
+            background: var(--gold-matte-light);
+            color: var(--gold-matte);
+        }
+        .property-card-item .pci-footer .pci-actions .pci-edit:hover {
+            background: var(--gold-matte);
+            color: var(--graphite);
+        }
+
+        .property-card-item .pci-footer .pci-actions .pci-delete {
+            background: #f8d7da;
+            color: var(--danger);
+        }
+        .property-card-item .pci-footer .pci-actions .pci-delete:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        /* ===== РЕДАКТОР КАРТОЧКИ НЕДВИЖИМОСТИ ===== */
+        .property-editor {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .property-editor.active {
+            display: block;
+        }
+
+        .property-editor-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+
+        .property-form {
+            background: white;
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0, 0, 0, 0.02);
+        }
+
+        .property-form .form-group {
+            margin-bottom: 18px;
+        }
+
+        .property-form .form-group label {
+            display: block;
+            font-weight: 500;
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+            color: var(--graphite);
+        }
+
+        .property-form .form-group input,
+        .property-form .form-group select,
+        .property-form .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 14px;
+            border: 1.5px solid #e8e6e2;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            transition: 0.2s;
+            background: #faf9f7;
+            outline: none;
+        }
+
+        .property-form .form-group input:focus,
+        .property-form .form-group select:focus,
+        .property-form .form-group textarea:focus {
+            border-color: var(--gold-matte);
+            box-shadow: 0 0 0 4px rgba(197, 162, 103, 0.1);
+            background: white;
+        }
+
+        .property-form .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .property-form .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .property-preview {
+            background: white;
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0, 0, 0, 0.02);
+            position: sticky;
+            top: 140px;
+            align-self: start;
+        }
+
+        .property-preview .preview-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid #f0eee9;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .property-preview .preview-img {
+            width: 100%;
+            height: 200px;
+            background: #ddd;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .property-preview .preview-img .preview-ribbon {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: var(--gold-matte);
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 0.6rem;
+            font-weight: 700;
+            color: var(--graphite);
+        }
+
+        .property-preview .preview-info {
+            padding: 20px;
+        }
+
+        .property-preview .preview-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .property-preview .preview-details {
+            font-size: 0.8rem;
+            color: #888;
+            margin: 8px 0;
+            display: flex;
+            gap: 12px;
+        }
+
+        .property-preview .preview-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        /* ============================================= */
+        /* 5. НАСТРОЙКА СЛАЙДЕРА */
+        /* ============================================= */
+        .slider-settings {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+
+        .slider-form {
+            background: white;
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0, 0, 0, 0.02);
+        }
+
+        .slider-form .form-group {
+            margin-bottom: 18px;
+        }
+
+        .slider-form .form-group label {
+            display: block;
+            font-weight: 500;
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+            color: var(--graphite);
+        }
+
+        .slider-form .form-group input,
+        .slider-form .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 14px;
+            border: 1.5px solid #e8e6e2;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            transition: 0.2s;
+            background: #faf9f7;
+            outline: none;
+        }
+
+        .slider-form .form-group input:focus,
+        .slider-form .form-group select:focus {
+            border-color: var(--gold-matte);
+            box-shadow: 0 0 0 4px rgba(197, 162, 103, 0.1);
+            background: white;
+        }
+
+        .slider-form .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .slider-preview {
+            background: white;
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0, 0, 0, 0.02);
+        }
+
+        .slider-preview .preview-slider {
+            width: 100%;
+            height: 300px;
+            background: #ddd;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slider-preview .preview-slider .slide-overlay {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(26, 28, 30, 0.7);
+            backdrop-filter: blur(8px);
+            padding: 12px 24px;
+            border-radius: 40px;
+            color: white;
+            font-weight: 500;
+            border-left: 4px solid var(--gold-matte);
+        }
+
+        .slider-preview .preview-slider .slide-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(26, 28, 30, 0.5);
+            backdrop-filter: blur(6px);
+            width: 40px;
+            height: 40px;
+            border-radius: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold-matte);
+            cursor: pointer;
+            border: none;
+            font-size: 1.2rem;
+        }
+
+        .slider-preview .preview-slider .slide-nav.prev { left: 16px; }
+        .slider-preview .preview-slider .slide-nav.next { right: 16px; }
+
+        .slider-preview .preview-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .slider-preview .preview-dots .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 100%;
+            background: #ddd;
+            cursor: pointer;
+            transition: 0.2s;
+            border: none;
+        }
+
+        .slider-preview .preview-dots .dot.active {
+            background: var(--gold-matte);
+            width: 28px;
+            border-radius: 10px;
+        }
+
+        .slider-items {
+            margin-top: 24px;
+        }
+
+        .slider-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px 16px;
+            background: white;
+            border-radius: 16px;
+            margin-bottom: 8px;
+            border: 1px solid #f0eee9;
+            transition: 0.2s;
+        }
+
+        .slider-item:hover {
+            border-color: var(--gold-matte);
+        }
+
+        .slider-item .si-preview {
+            width: 60px;
+            height: 45px;
+            border-radius: 12px;
+            background: #ddd;
+            flex-shrink: 0;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .slider-item .si-info {
+            flex: 1;
+        }
+
+        .slider-item .si-info .si-title {
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .slider-item .si-info .si-sub {
+            font-size: 0.75rem;
+            color: #888;
+        }
+
+        .slider-item .si-actions button {
+            padding: 4px 12px;
+            border-radius: 40px;
+            border: none;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .slider-item .si-actions .si-edit {
+            background: var(--gold-matte-light);
+            color: var(--gold-matte);
+        }
+        .slider-item .si-actions .si-edit:hover {
+            background: var(--gold-matte);
+            color: var(--graphite);
+        }
+        .slider-item .si-actions .si-delete {
+            background: #f8d7da;
+            color: var(--danger);
+        }
+        .slider-item .si-actions .si-delete:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        .slider-item .si-order {
+            color: #aaa;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: #1A1C1E;
+            color: #C5A267;
+            padding: 14px 28px;
+            border-radius: 60px;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+            z-index: 9999;
+            border: 1px solid #C5A267;
+            font-size: 0.85rem;
+            box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.1);
+            max-width: 92%;
+            display: none;
+        }
+
+        .toast.show {
+            display: block;
+            animation: fadeInUp 0.3s ease;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1100px) {
+            .container { padding: 0 28px; }
+            .property-editor-grid,
+            .slider-settings,
+            .survey-editor-grid {
+                grid-template-columns: 1fr;
+            }
+            .orders-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .survey-preview {
+                position: static;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .orders-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+            .orders-table-wrap {
+                overflow-x: auto;
+            }
+            .orders-table {
+                font-size: 0.8rem;
+                min-width: 700px;
+            }
+            .orders-table th,
+            .orders-table td {
+                padding: 10px 14px;
+            }
+            .property-form .form-row,
+            .slider-form .form-row,
+            .survey-form .form-row {
+                grid-template-columns: 1fr;
+            }
+            .properties-grid,
+            .surveys-grid {
+                grid-template-columns: 1fr;
+            }
+            .users-grid {
+                grid-template-columns: 1fr;
+            }
+            .admin-menu {
+                gap: 4px;
+            }
+            .admin-menu a {
+                padding: 6px 14px;
+                font-size: 0.75rem;
+            }
+            .page-header h2 {
+                font-size: 1.4rem;
+            }
+            .header {
+                padding: 16px 0 12px;
+            }
+            .logo-area h1 {
+                font-size: 1.2rem;
+            }
+            .slider-preview .preview-slider {
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ===== ШАПКА ===== -->
+    <div class="header">
+        <div class="container">
+            <div class="header-row">
+                <div class="logo-area">
+                    <a href="#">
+                        <h1>GALLERY <span>ADMIN</span></h1>
+                        <p>Панель управления</p>
+                    </a>
+                </div>
+                <div class="right-actions">
+                    <span style="font-size: 0.8rem; color: #888;">Администратор</span>
+                    <div class="user-avatar">А</div>
+                    <a href="login.html" class="btn-ghost">Выйти</a>
+                </div>
+            </div>
+            <div class="admin-menu">
+                <a href="#" data-page="orders"><i class="fas fa-shopping-bag"></i> Заказы</a>
+                <a href="#" data-page="users"><i class="fas fa-users"></i> Пользователи</a>
+                <a href="#" class="active" data-page="surveys"><i class="fas fa-poll"></i> Опросы</a>
+                <a href="#" data-page="properties"><i class="fas fa-building"></i> Недвижимость</a>
+                <a href="#" data-page="slider"><i class="fas fa-images"></i> Слайдер</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== ОСНОВНОЙ КОНТЕНТ ===== -->
+    <div class="admin-wrapper">
+        <div class="container">
+            <!-- ========================================= -->
+            <!-- СТРАНИЦА: ЗАКАЗЫ -->
+            <!-- ========================================= -->
+            <div class="admin-page" id="page-orders">
+                <div class="page-header">
+                    <h2>Обработка заказов <small>управление и статусы</small></h2>
+                    <div class="page-actions">
+                        <button class="btn-outline" onclick="showToast('📊 Экспорт отчёта (демо)')"><i class="fas fa-download"></i> Экспорт</button>
+                        <button class="btn-gold" onclick="showToast('🔄 Данные обновлены')"><i class="fas fa-sync"></i> Обновить</button>
+                    </div>
+                </div>
+
+                <div class="orders-stats">
+                    <div class="stat-card pending">
+                        <i class="stat-icon fas fa-clock"></i>
+                        <div class="stat-number">8</div>
+                        <div class="stat-label">В обработке</div>
+                    </div>
+                    <div class="stat-card active">
+                        <i class="stat-icon fas fa-spinner"></i>
+                        <div class="stat-number">12</div>
+                        <div class="stat-label">Активные</div>
+                    </div>
+                    <div class="stat-card completed">
+                        <i class="stat-icon fas fa-check-circle"></i>
+                        <div class="stat-number">24</div>
+                        <div class="stat-label">Завершённые</div>
+                    </div>
+                    <div class="stat-card cancelled">
+                        <i class="stat-icon fas fa-times-circle"></i>
+                        <div class="stat-number">5</div>
+                        <div class="stat-label">Отменённые</div>
+                    </div>
+                </div>
+
+                <div class="orders-table-wrap">
+                    <table class="orders-table">
+                        <thead>
+                            <tr>
+                                <th>Заказ</th>
+                                <th>Клиент</th>
+                                <th>Объект</th>
+                                <th>Сумма</th>
+                                <th>Статус</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>#GSP-001</strong><br><small style="color:#888;">12.06.2026</small></td>
+                                <td>Александр И.</td>
+                                <td>Резиденция «Акант»</td>
+                                <td>89 000 000 ₽</td>
+                                <td><span class="status-badge active">Активный</span></td>
+                                <td>
+                                    <div class="order-actions-small">
+                                        <button class="btn-edit" onclick="showToast('✏️ Редактирование заказа #GSP-001')">Изменить</button>
+                                        <button class="btn-delete" onclick="showToast('🗑️ Заказ #GSP-001 удалён (демо)')">Удалить</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>#GSP-002</strong><br><small style="color:#888;">10.06.2026</small></td>
+                                <td>Екатерина С.</td>
+                                <td>Вилла Forest House</td>
+                                <td>275 000 000 ₽</td>
+                                <td><span class="status-badge pending">В обработке</span></td>
+                                <td>
+                                    <div class="order-actions-small">
+                                        <button class="btn-edit" onclick="showToast('✏️ Редактирование заказа #GSP-002')">Изменить</button>
+                                        <button class="btn-delete" onclick="showToast('🗑️ Заказ #GSP-002 удалён (демо)')">Удалить</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>#GSP-003</strong><br><small style="color:#888;">05.05.2026</small></td>
+                                <td>Михаил Г.</td>
+                                <td>Пентхаус «Золотая линия»</td>
+                                <td>149 000 000 ₽</td>
+                                <td><span class="status-badge completed">Завершён</span></td>
+                                <td>
+                                    <div class="order-actions-small">
+                                        <button class="btn-edit" onclick="showToast('✏️ Редактирование заказа #GSP-003')">Изменить</button>
+                                        <button class="btn-delete" onclick="showToast('🗑️ Заказ #GSP-003 удалён (демо)')">Удалить</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ========================================= -->
+            <!-- СТРАНИЦА: ПОЛЬЗОВАТЕЛИ -->
+            <!-- ========================================= -->
+            <div class="admin-page" id="page-users">
+                <div class="page-header">
+                    <h2>Пользователи <small>управление аккаунтами</small></h2>
+                    <div class="page-actions">
+                        <button class="btn-gold" onclick="showToast('👤 Форма создания пользователя (демо)')"><i class="fas fa-user-plus"></i> Добавить</button>
+                    </div>
+                </div>
+
+                <div class="users-grid">
+                    <div class="user-card">
+                        <div class="user-avatar-big">АИ</div>
+                        <div class="user-name">Александр Иванов</div>
+                        <div class="user-email">alex@example.com</div>
+                        <div class="user-info">
+                            <span><i class="fas fa-calendar"></i> 12.06.2026</span>
+                            <span><i class="fas fa-shopping-bag"></i> 3 заказа</span>
+                        </div>
+                        <div class="user-actions">
+                            <button class="btn-edit-user" onclick="showToast('✏️ Редактирование пользователя')">Редактировать</button>
+                            <button class="btn-block" onclick="showToast('🚫 Пользователь заблокирован (демо)')">Заблокировать</button>
+                        </div>
+                    </div>
+
+                    <div class="user-card">
+                        <div class="user-avatar-big">ЕС</div>
+                        <div class="user-name">Екатерина Смирнова</div>
+                        <div class="user-email">ekaterina@example.com</div>
+                        <div class="user-info">
+                            <span><i class="fas fa-calendar"></i> 10.06.2026</span>
+                            <span><i class="fas fa-shopping-bag"></i> 5 заказов</span>
+                        </div>
+                        <div class="user-actions">
+                            <button class="btn-edit-user" onclick="showToast('✏️ Редактирование пользователя')">Редактировать</button>
+                            <button class="btn-block" onclick="showToast('🚫 Пользователь заблокирован (демо)')">Заблокировать</button>
+                        </div>
+                    </div>
+
+                    <div class="user-card">
+                        <div class="user-avatar-big">МГ</div>
+                        <div class="user-name">Михаил Громов</div>
+                        <div class="user-email">mikhail@example.com</div>
+                        <div class="user-info">
+                            <span><i class="fas fa-calendar"></i> 05.05.2026</span>
+                            <span><i class="fas fa-shopping-bag"></i> 8 заказов</span>
+                        </div>
+                        <div class="user-actions">
+                            <button class="btn-edit-user" onclick="showToast('✏️ Редактирование пользователя')">Редактировать</button>
+                            <button class="btn-block" onclick="showToast('🚫 Пользователь заблокирован (демо)')">Заблокировать</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========================================= -->
+            <!-- СТРАНИЦА: ОПРОСЫ КЛИЕНТОВ -->
+            <!-- ========================================= -->
+            <div class="admin-page active" id="page-surveys">
+                <!-- СПИСОК ОПРОСОВ -->
+                <div id="surveysList">
+                    <div class="page-header">
+                        <h2>Опросы клиентов <small>управление и анализ</small></h2>
+                        <div class="page-actions">
+                            <button class="btn-gold" onclick="createNewSurvey()"><i class="fas fa-plus"></i> Создать опрос</button>
+                        </div>
+                    </div>
+
+                    <div class="surveys-grid">
+                        <div class="survey-card" onclick="openSurveyEditor(1)">
+                            <div class="survey-header">
+                                <div class="survey-title">Удовлетворённость обслуживанием</div>
+                                <span class="survey-status active">Активен</span>
+                            </div>
+                            <div class="survey-desc">Оцените качество обслуживания в агентстве. Нам важно ваше мнение!</div>
+                            <div class="survey-meta">
+                                <span><i class="fas fa-calendar-alt"></i> Создан: 01.06.2026</span>
+                                <span><i class="fas fa-users"></i> 24 ответа</span>
+                            </div>
+                            <div class="survey-actions">
+                                <button class="btn-edit-survey" onclick="event.stopPropagation(); openSurveyEditor(1)"><i class="fas fa-edit"></i> Редактировать</button>
+                                <button class="btn-results" onclick="event.stopPropagation(); showToast('📊 Результаты опроса #1 (демо)')"><i class="fas fa-chart-bar"></i> Результаты</button>
+                                <button class="btn-delete-survey" onclick="event.stopPropagation(); deleteSurvey(1)"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="survey-card" onclick="openSurveyEditor(2)">
+                            <div class="survey-header">
+                                <div class="survey-title">Качество консультации</div>
+                                <span class="survey-status active">Активен</span>
+                            </div>
+                            <div class="survey-desc">Как вы оцениваете работу наших консультантов по недвижимости?</div>
+                            <div class="survey-meta">
+                                <span><i class="fas fa-calendar-alt"></i> Создан: 15.05.2026</span>
+                                <span><i class="fas fa-users"></i> 18 ответов</span>
+                            </div>
+                            <div class="survey-actions">
+                                <button class="btn-edit-survey" onclick="event.stopPropagation(); openSurveyEditor(2)"><i class="fas fa-edit"></i> Редактировать</button>
+                                <button class="btn-results" onclick="event.stopPropagation(); showToast('📊 Результаты опроса #2 (демо)')"><i class="fas fa-chart-bar"></i> Результаты</button>
+                                <button class="btn-delete-survey" onclick="event.stopPropagation(); deleteSurvey(2)"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="survey-card" onclick="openSurveyEditor(3)">
+                            <div class="survey-header">
+                                <div class="survey-title">Рекомендации друзьям</div>
+                                <span class="survey-status draft">Черновик</span>
+                            </div>
+                            <div class="survey-desc">Порекомендовали бы вы нас своим друзьям и знакомым?</div>
+                            <div class="survey-meta">
+                                <span><i class="fas fa-calendar-alt"></i> Создан: 20.04.2026</span>
+                                <span><i class="fas fa-users"></i> 0 ответов</span>
+                            </div>
+                            <div class="survey-actions">
+                                <button class="btn-edit-survey" onclick="event.stopPropagation(); openSurveyEditor(3)"><i class="fas fa-edit"></i> Редактировать</button>
+                                <button class="btn-results" onclick="event.stopPropagation(); showToast('📊 Результаты опроса #3 (демо)')"><i class="fas fa-chart-bar"></i> Результаты</button>
+                                <button class="btn-delete-survey" onclick="event.stopPropagation(); deleteSurvey(3)"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="survey-card" onclick="openSurveyEditor(4)">
+                            <div class="survey-header">
+                                <div class="survey-title">Оценка сайта</div>
+                                <span class="survey-status inactive">Неактивен</span>
+                            </div>
+                            <div class="survey-desc">Оцените удобство и функциональность нашего сайта.</div>
+                            <div class="survey-meta">
+                                <span><i class="fas fa-calendar-alt"></i> Создан: 10.03.2026</span>
+                                <span><i class="fas fa-users"></i> 12 ответов</span>
+                            </div>
+                            <div class="survey-actions">
+                                <button class="btn-edit-survey" onclick="event.stopPropagation(); openSurveyEditor(4)"><i class="fas fa-edit"></i> Редактировать</button>
+                                <button class="btn-results" onclick="event.stopPropagation(); showToast('📊 Результаты опроса #4 (демо)')"><i class="fas fa-chart-bar"></i> Результаты</button>
+                                <button class="btn-delete-survey" onclick="event.stopPropagation(); deleteSurvey(4)"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- РЕДАКТОР ОПРОСА (скрыт по умолчанию) -->
+                <div class="survey-editor" id="surveyEditor">
+                    <div class="page-header">
+                        <div>
+                            <button class="btn-outline" onclick="closeSurveyEditor()"><i class="fas fa-arrow-left"></i> Назад к списку</button>
+                            <h2 style="margin-top:12px;">Редактирование опроса <small id="editorSurveyId">#1</small></h2>
+                        </div>
+                        <div class="page-actions">
+                            <button class="btn-danger" onclick="deleteSurvey(currentSurveyId)"><i class="fas fa-trash"></i> Удалить</button>
+                            <button class="btn-success" onclick="saveSurvey()"><i class="fas fa-save"></i> Сохранить</button>
+                        </div>
+                    </div>
+
+                    <div class="survey-editor-grid">
+                        <!-- Форма -->
+                        <div class="survey-form">
+                            <h3 style="margin-bottom: 20px; font-weight: 600;">Основная информация</h3>
+                            <div class="form-group">
+                                <label>Название опроса</label>
+                                <input type="text" id="editSurveyTitle" value="Удовлетворённость обслуживанием" placeholder="Введите название опроса">
+                            </div>
+                            <div class="form-group">
+                                <label>Описание</label>
+                                <textarea id="editSurveyDesc" rows="3">Оцените качество обслуживания в агентстве. Нам важно ваше мнение!</textarea>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Статус</label>
+                                    <select id="editSurveyStatus">
+                                        <option value="active" selected>Активен</option>
+                                        <option value="draft">Черновик</option>
+                                        <option value="inactive">Неактивен</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Категория</label>
+                                    <select id="editSurveyCategory">
+                                        <option value="service">Качество обслуживания</option>
+                                        <option value="consultation" selected>Консультация</option>
+                                        <option value="site">Оценка сайта</option>
+                                        <option value="recommendation">Рекомендации</option>
+                                        <option value="other">Другое</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <h3 style="margin: 24px 0 16px; font-weight: 600;">Вопросы</h3>
+                            <div id="questionsContainer">
+                                <div class="form-group question-item" data-index="0">
+                                    <label>Вопрос 1</label>
+                                    <input type="text" class="question-text" value="Как вы оцениваете качество обслуживания?" placeholder="Введите вопрос">
+                                    <div class="form-group" style="margin-top: 8px;">
+                                        <label>Варианты ответов</label>
+                                        <div class="options-container">
+                                            <div style="display:flex; gap:8px; margin-bottom:6px;">
+                                                <input type="text" class="option-text" value="Отлично" placeholder="Вариант ответа" style="flex:1;">
+                                                <button class="btn-remove-option" onclick="removeOption(this)" style="background:#f8d7da; border:none; border-radius:40px; padding:0 12px; cursor:pointer; color:var(--danger);">✕</button>
+                                            </div>
+                                            <div style="display:flex; gap:8px; margin-bottom:6px;">
+                                                <input type="text" class="option-text" value="Хорошо" placeholder="Вариант ответа" style="flex:1;">
+                                                <button class="btn-remove-option" onclick="removeOption(this)" style="background:#f8d7da; border:none; border-radius:40px; padding:0 12px; cursor:pointer; color:var(--danger);">✕</button>
+                                            </div>
+                                            <div style="display:flex; gap:8px; margin-bottom:6px;">
+                                                <input type="text" class="option-text" value="Удовлетворительно" placeholder="Вариант ответа" style="flex:1;">
+                                                <button class="btn-remove-option" onclick="removeOption(this)" style="background:#f8d7da; border:none; border-radius:40px; padding:0 12px; cursor:pointer; color:var(--danger);">✕</button>
+                                            </div>
+                                            <button class="btn-add-option" onclick="addOption(this)" style="background:var(--gold-matte-light); border:none; border-radius:40px; padding:6px 16px; cursor:pointer; color:var(--gold-matte); font-size:0.75rem;">+ Добавить вариант</button>
+                                        </div>
+                                    </div>
+                                    <button class="btn-remove-question" onclick="removeQuestion(this)" style="margin-top:8px; background:#f8d7da; border:none; border-radius:40px; padding:4px 16px; cursor:pointer; color:var(--danger); font-size:0.7rem;">✕ Удалить вопрос</button>
+                                </div>
+
+                                <div class="form-group question-item" data-index="1">
+                                    <label>Вопрос 2</label>
+                                    <input type="text" class="question-text" value="Насколько быстро вы получили ответ на свой запрос?" placeholder="Введите вопрос">
+                                    <div class="form-group" style="margin-top: 8px;">
+                                        <label>Варианты ответов</label>
+                                        <div class="options-container">
+                                            <div style="display:flex; gap:8px; margin-bottom:6px;">
+                                                <input type="text" class="option-text" value="Очень быстро" placeholder="Вариант ответа" style="flex:1;">
+                                                <button class="btn-remove-option" onclick="removeOption(this)" style="background:#f8d7da; border:none; border-radius:40px; padding:0 12px; cursor:pointer; color:var(--danger);">✕</button>
+                                            </div>
+                                            <div style="display:flex; gap:8px; margin-bottom:6px;">
+                                                <input type="text" class="option-text" value="Быстро" placeholder="Вариант ответа" style="flex:1;">
+                                                <button class="btn-remove-option" onclick="removeOption(this)" style="background:#f8d7da; border:none; border-radius:40px; padding:0 12px; cursor:pointer; color:var(--danger);">✕</button>
+                                            </div>
+                                            <div style="display:flex; gap:8px; margin-bottom:6px;">
+                                                <input type="text" class="option-text" value="Долго" placeholder="Вариант ответа" style="flex:1;">
+                                                <button class="btn-remove-option" onclick="removeOption(this)" style="background:#f8d7da; border:none; border-radius:40px; padding:0 12px; cursor:pointer; color:var(--danger);">✕</button>
+                                            </div>
+                                            <button class="btn-add-option" onclick="addOption(this)" style="background:var(--gold-matte-light); border:none; border-radius:40px; padding:6px 16px; cursor:pointer; color:var(--gold-matte); font-size:0.75rem;">+ Добавить вариант</button>
+                                        </div>
+                                    </div>
+                                    <button class="btn-remove-question" onclick="removeQuestion(this)" style="margin-top:8px; background:#f8d7da; border:none; border-radius:40px; padding:4px 16px; cursor:pointer; color:var(--danger); font-size:0.7rem;">✕ Удалить вопрос</button>
+                                </div>
+                            </div>
+
+                            <button class="btn-gold" style="width:100%; justify-content:center; margin-top:12px;" onclick="addQuestion()">
+                                <i class="fas fa-plus"></i> Добавить вопрос
+                            </button>
+                        </div>
+
+                        <!-- Превью опроса -->
+                        <div class="survey-preview">
+                            <h3 style="margin-bottom: 20px; font-weight: 600;">Предпросмотр</h3>
+                            <div class="preview-survey" id="surveyPreview">
+                                <div class="ps-title" id="previewSurveyTitle">Удовлетворённость обслуживанием</div>
+                                <div class="ps-desc" id="previewSurveyDesc">Оцените качество обслуживания в агентстве. Нам важно ваше мнение!</div>
+                                <div id="previewQuestions">
+                                    <div class="ps-question">
+                                        <div class="pq-text">1. Как вы оцениваете качество обслуживания?</div>
+                                        <div class="pq-options">
+                                            <label><input type="radio" name="preview_q1"> Отлично</label>
+                                            <label><input type="radio" name="preview_q1"> Хорошо</label>
+                                            <label><input type="radio" name="preview_q1"> Удовлетворительно</label>
+                                        </div>
+                                    </div>
+                                    <div class="ps-question">
+                                        <div class="pq-text">2. Насколько быстро вы получили ответ на свой запрос?</div>
+                                        <div class="pq-options">
+                                            <label><input type="radio" name="preview_q2"> Очень быстро</label>
+                                            <label><input type="radio" name="preview_q2"> Быстро</label>
+                                            <label><input type="radio" name="preview_q2"> Долго</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="margin-top: 20px; padding: 16px; background: #f8f7f5; border-radius: 16px;">
+                                <p style="font-size:0.8rem; color:#888;"><i class="fas fa-info-circle" style="color:var(--gold-matte);"></i> Изменения сохраняются после нажатия кнопки «Сохранить»</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========================================= -->
+            <!-- СТРАНИЦА: НЕДВИЖИМОСТЬ -->
+            <!-- ========================================= -->
+            <div class="admin-page" id="page-properties">
+                <div class="page-header">
+                    <h2>Карточки недвижимости <small>управление объектами</small></h2>
+                    <div class="page-actions">
+                        <button class="btn-gold" onclick="showToast('🏗️ Форма создания объекта (демо)')"><i class="fas fa-plus"></i> Создать карточку</button>
+                    </div>
+                </div>
+
+                <div class="properties-grid">
+                    <div class="property-card-item" onclick="showToast('📄 Редактирование карточки (демо)')">
+                        <div class="pci-img" style="background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80');">
+                            <span class="pci-status">В продаже</span>
+                        </div>
+                        <div class="pci-body">
+                            <div class="pci-title">Резиденция «Акант»</div>
+                            <div class="pci-address"><i class="fas fa-map-pin" style="color:var(--gold-matte);"></i> Санкт-Петербург, Невский пр.</div>
+                            <div class="pci-details">
+                                <span><i class="fas fa-ruler-combined"></i> 180 м²</span>
+                                <span><i class="fas fa-bed"></i> 4 комнаты</span>
+                            </div>
+                            <div class="pci-price">89 000 000 ₽</div>
+                            <div class="pci-footer">
+                                <span class="pci-date">Обновлено: 12.06.2026</span>
+                                <div class="pci-actions">
+                                    <button class="pci-edit" onclick="event.stopPropagation(); showToast('✏️ Редактирование карточки')"><i class="fas fa-edit"></i> Настроить</button>
+                                    <button class="pci-delete" onclick="event.stopPropagation(); showToast('🗑️ Карточка удалена (демо)')"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="property-card-item" onclick="showToast('📄 Редактирование карточки (демо)')">
+                        <div class="pci-img" style="background-image: url('https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=600&q=80');">
+                            <span class="pci-status">В продаже</span>
+                        </div>
+                        <div class="pci-body">
+                            <div class="pci-title">Пентхаус «Золотая линия»</div>
+                            <div class="pci-address"><i class="fas fa-map-pin" style="color:var(--gold-matte);"></i> Москва, Тверская ул.</div>
+                            <div class="pci-details">
+                                <span><i class="fas fa-ruler-combined"></i> 267 м²</span>
+                                <span><i class="fas fa-bed"></i> 5 комнат</span>
+                            </div>
+                            <div class="pci-price">149 000 000 ₽</div>
+                            <div class="pci-footer">
+                                <span class="pci-date">Обновлено: 10.06.2026</span>
+                                <div class="pci-actions">
+                                    <button class="pci-edit" onclick="event.stopPropagation(); showToast('✏️ Редактирование карточки')"><i class="fas fa-edit"></i> Настроить</button>
+                                    <button class="pci-delete" onclick="event.stopPropagation(); showToast('🗑️ Карточка удалена (демо)')"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========================================= -->
+            <!-- СТРАНИЦА: СЛАЙДЕР -->
+            <!-- ========================================= -->
+            <div class="admin-page" id="page-slider">
+                <div class="page-header">
+                    <h2>Настройка слайдера <small>управление изображениями</small></h2>
+                    <div class="page-actions">
+                        <button class="btn-gold" onclick="showToast('🖼️ Слайд добавлен (демо)')"><i class="fas fa-plus"></i> Добавить слайд</button>
+                    </div>
+                </div>
+
+                <div class="slider-settings">
+                    <div class="slider-form">
+                        <h3 style="margin-bottom: 20px; font-weight: 600;">Редактор слайда</h3>
+                        <div class="form-group">
+                            <label>Изображение (URL)</label>
+                            <input type="text" value="https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=1600&q=80">
+                        </div>
+                        <div class="form-group">
+                            <label>Заголовок</label>
+                            <input type="text" value="Жилой комплекс «Матовый горизонт»">
+                        </div>
+                        <div class="form-group">
+                            <label>Подпись (необязательно)</label>
+                            <input type="text" value="Современная архитектура в центре города">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Порядок</label>
+                                <input type="number" value="1">
+                            </div>
+                            <div class="form-group">
+                                <label>Статус</label>
+                                <select>
+                                    <option selected>Активен</option>
+                                    <option>Скрыт</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="btn-gold" style="width:100%; justify-content:center;" onclick="showToast('💾 Слайд сохранён!')">
+                            <i class="fas fa-save"></i> Сохранить слайд
+                        </button>
+                    </div>
+
+                    <div class="slider-preview">
+                        <h3 style="margin-bottom: 20px; font-weight: 600;">Предпросмотр слайдера</h3>
+                        <div class="preview-slider" style="background-image: url('https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=1600&q=80');">
+                            <div class="slide-overlay">Жилой комплекс «Матовый горизонт»</div>
+                            <button class="slide-nav prev"><i class="fas fa-chevron-left"></i></button>
+                            <button class="slide-nav next"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                        <div class="preview-dots">
+                            <button class="dot active"></button>
+                            <button class="dot"></button>
+                            <button class="dot"></button>
+                            <button class="dot"></button>
+                        </div>
+
+                        <div class="slider-items">
+                            <h4 style="margin-bottom:12px; font-weight:500; color:#888; font-size:0.85rem;">Список слайдов</h4>
+                            <div class="slider-item">
+                                <div class="si-preview" style="background-image: url('https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=1600&q=80');"></div>
+                                <div class="si-info">
+                                    <div class="si-title">ЖК «Матовый горизонт»</div>
+                                    <div class="si-sub">Современная архитектура</div>
+                                </div>
+                                <div class="si-order">#1</div>
+                                <div class="si-actions">
+                                    <button class="si-edit" onclick="showToast('✏️ Редактирование слайда')">Изм.</button>
+                                    <button class="si-delete" onclick="showToast('🗑️ Слайд удалён (демо)')">Уд.</button>
+                                </div>
+                            </div>
+                            <div class="slider-item">
+                                <div class="si-preview" style="background-image: url('https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=1600&q=80');"></div>
+                                <div class="si-info">
+                                    <div class="si-title">Дизайн-проект «Золотое сечение»</div>
+                                    <div class="si-sub">Интерьер премиум класса</div>
+                                </div>
+                                <div class="si-order">#2</div>
+                                <div class="si-actions">
+                                    <button class="si-edit" onclick="showToast('✏️ Редактирование слайда')">Изм.</button>
+                                    <button class="si-delete" onclick="showToast('🗑️ Слайд удалён (демо)')">Уд.</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== TOAST ===== -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // =============================================
+        // ПОКАЗ TOAST
+        // =============================================
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message || '✅ Успешно!';
+            toast.classList.add('show');
+            clearTimeout(toast._timeout);
+            toast._timeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // =============================================
+        // ПЕРЕКЛЮЧЕНИЕ СТРАНИЦ
+        // =============================================
+        const menuLinks = document.querySelectorAll('.admin-menu a');
+        const pages = {
+            orders: document.getElementById('page-orders'),
+            users: document.getElementById('page-users'),
+            surveys: document.getElementById('page-surveys'),
+            properties: document.getElementById('page-properties'),
+            slider: document.getElementById('page-slider')
+        };
+
+        menuLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const page = link.dataset.page;
+
+                menuLinks.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+
+                Object.keys(pages).forEach(key => {
+                    pages[key].classList.remove('active');
+                });
+                if (pages[page]) {
+                    pages[page].classList.add('active');
+                }
+
+                // Если переключаемся не на опросы, закрываем редактор
+                if (page !== 'surveys') {
+                    closeSurveyEditor();
+                }
+
+                showToast(`📂 Переход в раздел "${link.textContent.trim()}"`);
+            });
+        });
+
+        // =============================================
+        // УПРАВЛЕНИЕ ОПРОСАМИ
+        // =============================================
+        let currentSurveyId = null;
+        const surveysData = {
+            1: {
+                title: 'Удовлетворённость обслуживанием',
+                desc: 'Оцените качество обслуживания в агентстве. Нам важно ваше мнение!',
+                status: 'active',
+                category: 'service',
+                questions: [
+                    { text: 'Как вы оцениваете качество обслуживания?', options: ['Отлично', 'Хорошо', 'Удовлетворительно'] },
+                    { text: 'Насколько быстро вы получили ответ на свой запрос?', options: ['Очень быстро', 'Быстро', 'Долго'] }
+                ]
+            },
+            2: {
+                title: 'Качество консультации',
+                desc: 'Как вы оцениваете работу наших консультантов по недвижимости?',
+                status: 'active',
+                category: 'consultation',
+                questions: [
+                    { text: 'Насколько компетентен был наш консультант?', options: ['Очень компетентен', 'Компетентен', 'Не компетентен'] },
+                    { text: 'Рекомендуете ли вы наши услуги друзьям?', options: ['Да', 'Нет', 'Возможно'] }
+                ]
+            },
+            3: {
+                title: 'Рекомендации друзьям',
+                desc: 'Порекомендовали бы вы нас своим друзьям и знакомым?',
+                status: 'draft',
+                category: 'recommendation',
+                questions: [
+                    { text: 'Порекомендовали бы вы нас?', options: ['Обязательно', 'Возможно', 'Нет'] }
+                ]
+            },
+            4: {
+                title: 'Оценка сайта',
+                desc: 'Оцените удобство и функциональность нашего сайта.',
+                status: 'inactive',
+                category: 'site',
+                questions: [
+                    { text: 'Насколько удобен наш сайт?', options: ['Очень удобен', 'Удобен', 'Неудобен'] },
+                    { text: 'Что можно улучшить?', options: ['Дизайн', 'Скорость', 'Навигацию'] }
+                ]
+            }
+        };
+
+        function openSurveyEditor(id) {
+            currentSurveyId = id;
+            const data = surveysData[id];
+
+            if (!data) {
+                showToast('❌ Опрос не найден');
+                return;
+            }
+
+            // Заполняем форму
+            document.getElementById('editSurveyTitle').value = data.title;
+            document.getElementById('editSurveyDesc').value = data.desc;
+            document.getElementById('editSurveyStatus').value = data.status;
+            document.getElementById('editSurveyCategory').value = data.category;
+            document.getElementById('editorSurveyId').textContent = '#' + id;
+
+            // Заполняем вопросы
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = '';
+            data.questions.forEach((q, index) => {
+                const questionHtml = createQuestionHTML(q.text, q.options, index);
+                container.insertAdjacentHTML('beforeend', questionHtml);
+            });
+
+            // Обновляем превью
+            updateSurveyPreview(data);
+
+            // Показываем редактор, скрываем список
+            document.getElementById('surveysList').style.display = 'none';
+            document.getElementById('surveyEditor').classList.add('active');
+
+            showToast(`✏️ Редактирование: ${data.title}`);
+        }
+
+        function createQuestionHTML(text, options, index) {
+            const num = index + 1;
+            let optionsHtml = '';
+            options.forEach(opt => {
+                optionsHtml += `
+                    <div style="display:flex; gap:8px; margin-bottom:6px;">
+                        <input type="text" class="option-text" value="${opt}" placeholder="Вариант ответа" style="flex:1; padding:8px 12px; border-radius:12px; border:1.5px solid #e8e6e2; font-family:'Inter',sans-serif; font-size:0.85rem; outline:none; background:#faf9f7;">
+                        <button class="btn-remove-option" onclick="removeOption(this)" style="background:#f8d7da; border:none; border-radius:40px; padding:0 12px; cursor:pointer; color:var(--danger);">✕</button>
+                    </div>
+                `;
+            });
+            optionsHtml += `
+                <button class="btn-add-option" onclick="addOption(this)" style="background:var(--gold-matte-light); border:none; border-radius:40px; padding:6px 16px; cursor:pointer; color:var(--gold-matte); font-size:0.75rem;">+ Добавить вариант</button>
+            `;
+
+            return `
+                <div class="form-group question-item" data-index="${index}">
+                    <label>Вопрос ${num}</label>
+                    <input type="text" class="question-text" value="${text}" placeholder="Введите вопрос" style="width:100%; padding:12px 16px; border-radius:14px; border:1.5px solid #e8e6e2; font-family:'Inter',sans-serif; font-size:0.95rem; outline:none; background:#faf9f7;">
+                    <div class="form-group" style="margin-top:8px;">
+                        <label>Варианты ответов</label>
+                        <div class="options-container">
+                            ${optionsHtml}
+                        </div>
+                    </div>
+                    <button class="btn-remove-question" onclick="removeQuestion(this)" style="margin-top:8px; background:#f8d7da; border:none; border-radius:40px; padding:4px 16px; cursor:pointer; color:var(--danger); font-size:0.7rem;">✕ Удалить вопрос</button>
+                </div>
+            `;
+        }
+
+        function updateSurveyPreview(data) {
+            document.getElementById('previewSurveyTitle').textContent = data.title;
+            document.getElementById('previewSurveyDesc').textContent = data.desc;
+
+            const container = document.getElementById('previewQuestions');
+            container.innerHTML = '';
+            data.questions.forEach((q, index) => {
+                const num = index + 1;
+                let optionsHtml = '';
+                q.options.forEach(opt => {
+                    optionsHtml += `
+                        <label><input type="radio" name="preview_q${num}"> ${opt}</label>
+                    `;
+                });
+                container.innerHTML += `
+                    <div class="ps-question">
+                        <div class="pq-text">${num}. ${q.text}</div>
+                        <div class="pq-options">
+                            ${optionsHtml}
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function closeSurveyEditor() {
+            document.getElementById('surveysList').style.display = 'block';
+            document.getElementById('surveyEditor').classList.remove('active');
+            currentSurveyId = null;
+        }
+
+        function saveSurvey() {
+            if (!currentSurveyId) {
+                showToast('❌ Не выбран опрос');
+                return;
+            }
+
+            // Собираем данные из формы
+            const title = document.getElementById('editSurveyTitle').value.trim();
+            const desc = document.getElementById('editSurveyDesc').value.trim();
+            const status = document.getElementById('editSurveyStatus').value;
+            const category = document.getElementById('editSurveyCategory').value;
+
+            // Собираем вопросы
+            const questionItems = document.querySelectorAll('.question-item');
+            const questions = [];
+            questionItems.forEach(item => {
+                const text = item.querySelector('.question-text').value.trim();
+                const optionInputs = item.querySelectorAll('.option-text');
+                const options = [];
+                optionInputs.forEach(input => {
+                    if (input.value.trim()) {
+                        options.push(input.value.trim());
+                    }
+                });
+                if (text && options.length > 0) {
+                    questions.push({ text, options });
+                }
+            });
+
+            if (questions.length === 0) {
+                showToast('⚠️ Добавьте хотя бы один вопрос с вариантами ответов');
+                return;
+            }
+
+            // Сохраняем
+            surveysData[currentSurveyId] = {
+                title,
+                desc,
+                status,
+                category,
+                questions
+            };
+
+            // Обновляем превью
+            updateSurveyPreview({ title, desc, status, category, questions });
+
+            showToast(`✅ Опрос #${currentSurveyId} сохранён!`);
+        }
+
+        function deleteSurvey(id) {
+            if (!confirm(`Вы уверены, что хотите удалить опрос #${id}?`)) return;
+
+            if (id === currentSurveyId) {
+                closeSurveyEditor();
+            }
+
+            delete surveysData[id];
+
+            // Удаляем карточку из DOM
+            const cards = document.querySelectorAll('.survey-card');
+            cards.forEach(card => {
+                if (card.getAttribute('onclick')?.includes(id)) {
+                    card.remove();
+                }
+            });
+
+            showToast(`🗑️ Опрос #${id} удалён`);
+        }
+
+        function createNewSurvey() {
+            const newId = Object.keys(surveysData).length + 1;
+            surveysData[newId] = {
+                title: 'Новый опрос',
+                desc: 'Описание опроса',
+                status: 'draft',
+                category: 'other',
+                questions: [
+                    { text: 'Ваш первый вопрос?', options: ['Вариант 1', 'Вариант 2', 'Вариант 3'] }
+                ]
+            };
+
+            // Добавляем карточку в список
+            const grid = document.querySelector('.surveys-grid');
+            const card = document.createElement('div');
+            card.className = 'survey-card';
+            card.setAttribute('onclick', `openSurveyEditor(${newId})`);
+            card.innerHTML = `
+                <div class="survey-header">
+                    <div class="survey-title">Новый опрос</div>
+                    <span class="survey-status draft">Черновик</span>
+                </div>
+                <div class="survey-desc">Описание опроса</div>
+                <div class="survey-meta">
+                    <span><i class="fas fa-calendar-alt"></i> Создан: ${new Date().toLocaleDateString('ru-RU')}</span>
+                    <span><i class="fas fa-users"></i> 0 ответов</span>
+                </div>
+                <div class="survey-actions">
+                    <button class="btn-edit-survey" onclick="event.stopPropagation(); openSurveyEditor(${newId})"><i class="fas fa-edit"></i> Редактировать</button>
+                    <button class="btn-results" onclick="event.stopPropagation(); showToast('📊 Результаты опроса #${newId} (демо)')"><i class="fas fa-chart-bar"></i> Результаты</button>
+                    <button class="btn-delete-survey" onclick="event.stopPropagation(); deleteSurvey(${newId})"><i class="fas fa-trash"></i></button>
+                </div>
+            `;
+            grid.appendChild(card);
+
+            showToast(`🆕 Создан новый опрос #${newId}`);
+            openSurveyEditor(newId);
+        }
+
+        // =============================================
+        // УПРАВЛЕНИЕ ВОПРОСАМИ И ВАРИАНТАМИ
+        // =============================================
+        function addQuestion() {
+            const container = document.getElementById('questionsContainer');
+            const index = container.querySelectorAll('.question-item').length;
+            const html = createQuestionHTML('Новый вопрос', ['Вариант 1', 'Вариант 2'], index);
+            container.insertAdjacentHTML('beforeend', html);
+            showToast('➕ Вопрос добавлен');
+        }
+
+        function removeQuestion(btn) {
+            const item = btn.closest('.question-item');
+            const items = document.querySelectorAll('.question-item');
+            if (items.length <= 1) {
+                showToast('⚠️ Должен быть хотя бы один вопрос');
+                return;
+            }
+            if (confirm('Удалить этот вопрос?')) {
+                item.remove();
+                // Перенумеровываем вопросы
+                document.querySelectorAll('.question-item').forEach((el, i) => {
+                    const label = el.querySelector('label');
+                    if (label) {
+                        label.textContent = `Вопрос ${i + 1}`;
+                    }
+                });
+                showToast('🗑️ Вопрос удалён');
+            }
+        }
+
+        function addOption(btn) {
+            const container = btn.closest('.options-container');
+            const div = document.createElement('div');
+            div.style.cssText = 'display:flex; gap:8px; margin-bottom:6px;';
+            div.innerHTML = `
+                <input type="text" class="option-text" placeholder="Новый вариант" style="flex:1; padding:8px 12px; border-radius:12px; border:1.5px solid #e8e6e2; font-family:'Inter',sans-serif; font-size:0.85rem; outline:none; background:#faf9f7;">
+                <button class="btn-remove-option" onclick="removeOption(this)" style="background:#f8d7da; border:none; border-radius:40px; padding:0 12px; cursor:pointer; color:var(--danger);">✕</button>
+            `;
+            container.insertBefore(div, btn);
+            showToast('➕ Вариант добавлен');
+        }
+
+        function removeOption(btn) {
+            const container = btn.closest('.options-container');
+            const items = container.querySelectorAll('.option-text');
+            if (items.length <= 2) {
+                showToast('⚠️ Должно быть минимум 2 варианта');
+                return;
+            }
+            btn.closest('div').remove();
+            showToast('🗑️ Вариант удалён');
+        }
+
+        // =============================================
+        // ОБНОВЛЕНИЕ ПРЕВЬЮ ПРИ ИЗМЕНЕНИИ ПОЛЕЙ
+        // =============================================
+        document.querySelectorAll('#editSurveyTitle, #editSurveyDesc, #editSurveyStatus, #editSurveyCategory').forEach(input => {
+            input.addEventListener('input', () => {
+                if (currentSurveyId) {
+                    const data = surveysData[currentSurveyId];
+                    if (data) {
+                        data.title = document.getElementById('editSurveyTitle').value.trim();
+                        data.desc = document.getElementById('editSurveyDesc').value.trim();
+                        data.status = document.getElementById('editSurveyStatus').value;
+                        data.category = document.getElementById('editSurveyCategory').value;
+                        updateSurveyPreview(data);
+                    }
+                }
+            });
+        });
+
+        // Обновление превью при изменении вопросов
+        document.addEventListener('input', (e) => {
+            if (e.target.classList.contains('question-text') || e.target.classList.contains('option-text')) {
+                if (currentSurveyId) {
+                    const data = surveysData[currentSurveyId];
+                    if (data) {
+                        // Собираем актуальные данные из формы
+                        const title = document.getElementById('editSurveyTitle').value.trim();
+                        const desc = document.getElementById('editSurveyDesc').value.trim();
+                        const status = document.getElementById('editSurveyStatus').value;
+                        const category = document.getElementById('editSurveyCategory').value;
+
+                        const questionItems = document.querySelectorAll('.question-item');
+                        const questions = [];
+                        questionItems.forEach(item => {
+                            const text = item.querySelector('.question-text').value.trim();
+                            const optionInputs = item.querySelectorAll('.option-text');
+                            const options = [];
+                            optionInputs.forEach(input => {
+                                if (input.value.trim()) {
+                                    options.push(input.value.trim());
+                                }
+                            });
+                            if (text && options.length > 0) {
+                                questions.push({ text, options });
+                            }
+                        });
+
+                        data.title = title;
+                        data.desc = desc;
+                        data.status = status;
+                        data.category = category;
+                        data.questions = questions;
+                        updateSurveyPreview(data);
+                    }
+                }
+            }
+        });
+
+        // =============================================
+        // КЛИК ПО ДОТАМ СЛАЙДЕРА
+        // =============================================
+        document.querySelectorAll('.preview-dots .dot').forEach(dot => {
+            dot.addEventListener('click', () => {
+                document.querySelectorAll('.preview-dots .dot').forEach(d => d.classList.remove('active'));
+                dot.classList.add('active');
+                showToast('🔄 Слайд переключён (демо)');
+            });
+        });
+
+        // =============================================
+        // КЛИК ПО КНОПКАМ НАВИГАЦИИ СЛАЙДЕРА
+        // =============================================
+        document.querySelectorAll('.slide-nav').forEach(btn => {
+            btn.addEventListener('click', () => {
+                showToast('🔄 Переключение слайда (демо)');
+            });
+        });
+
+        // =============================================
+        // АВТОМАТИЧЕСКОЕ ОБНОВЛЕНИЕ СТАТИСТИКИ
+        // =============================================
+        // Имитация обновления количества ответов
+        document.querySelectorAll('.survey-card').forEach(card => {
+            const meta = card.querySelector('.survey-meta');
+            if (meta) {
+                const usersSpan = meta.querySelector('span:last-child');
+                if (usersSpan) {
+                    const current = parseInt(usersSpan.textContent) || 0;
+                    const random = Math.floor(Math.random() * 10) + 1;
+                    // Небольшая анимация для демонстрации
+                    setTimeout(() => {
+                        // Оставляем как есть для демо
+                    }, 100);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+FROM php:8.4-fpm AS production
+
+RUN apt-get update && apt-get install -y \
+    libfreetype-dev \
+    libjpeg62-turbo-dev \
+    libpng-dev \
+    libzip-dev \
+    zip \
+    unzip \
+    curl \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) gd pdo_mysql mysqli zip opcache
+
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+# Node.js for frontend build during deploy
+RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
+    && apt-get install -y nodejs \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN groupadd -g 101 nginx \
+    && useradd -u 101 -ms /bin/bash -g nginx nginx
+
+WORKDIR /var/www
+
+CMD ["php-fpm", "-R"]

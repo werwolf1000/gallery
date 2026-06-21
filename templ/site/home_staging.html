@@ -1,0 +1,1391 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Хоумстейджинг | Галерея Пространств</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #F2F2F0;
+            font-family: 'Inter', sans-serif;
+            color: #1A1C1E;
+            line-height: 1.2;
+            min-height: 100vh;
+        }
+
+        :root {
+            --graphite: #1A1C1E;
+            --light-gray-bg: #F2F2F0;
+            --gold-matte: #C5A267;
+            --gold-matte-light: rgba(197, 162, 103, 0.2);
+            --card-white: #FFFFFF;
+        }
+
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 48px;
+        }
+
+        /* ===== ШАПКА ===== */
+        .header {
+            padding: 32px 0 24px;
+            border-bottom: 1px solid rgba(26, 28, 30, 0.08);
+            background-color: var(--light-gray-bg);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo-area h1 {
+            font-size: 1.9rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: var(--graphite);
+        }
+
+        .logo-area p {
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            color: var(--gold-matte);
+            font-weight: 500;
+            margin-top: 4px;
+        }
+
+        .logo-area a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 28px;
+            margin-bottom: 10px;
+            border-top: 1px solid rgba(26, 28, 30, 0.05);
+            padding-top: 24px;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            color: var(--graphite);
+            transition: 0.2s;
+            letter-spacing: -0.2px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid transparent;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            color: var(--gold-matte);
+            border-bottom-color: var(--gold-matte);
+        }
+
+        .right-actions {
+            display: flex;
+            gap: 20px;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            border: 1px solid var(--graphite);
+            padding: 8px 24px;
+            font-weight: 500;
+            border-radius: 40px;
+            color: var(--graphite);
+            cursor: pointer;
+            transition: 0.2s;
+            text-decoration: none;
+        }
+        .btn-ghost:hover {
+            background: var(--graphite);
+            color: white;
+        }
+
+        .btn-gold-circle {
+            background: var(--gold-matte);
+            border: none;
+            width: 42px;
+            height: 42px;
+            border-radius: 100%;
+            color: var(--graphite);
+            font-size: 1.4rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-gold-circle:hover {
+            transform: scale(1.05);
+        }
+
+        /* ===== СТРАНИЦА ХОУМСТЕЙДЖИНГ ===== */
+        .page-hero {
+            padding: 60px 0 40px;
+            text-align: center;
+        }
+
+        .page-hero h1 {
+            font-size: 3.2rem;
+            font-weight: 700;
+            color: var(--graphite);
+            letter-spacing: -0.02em;
+        }
+
+        .page-hero h1 span {
+            color: var(--gold-matte);
+        }
+
+        .page-hero p {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 700px;
+            margin: 16px auto 0;
+            line-height: 1.5;
+        }
+
+        .page-hero .breadcrumbs {
+            font-size: 0.85rem;
+            color: #888;
+            margin-bottom: 20px;
+        }
+
+        .page-hero .breadcrumbs a {
+            color: var(--gold-matte);
+            text-decoration: none;
+        }
+
+        .page-hero .breadcrumbs a:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== СТАТИСТИКА ===== */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin: 40px 0 60px;
+        }
+
+        .stat-item {
+            background: white;
+            border-radius: 24px;
+            padding: 28px 24px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0, 0, 0, 0.02);
+            transition: 0.2s;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.06);
+        }
+
+        .stat-item .stat-number {
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: var(--gold-matte);
+        }
+
+        .stat-item .stat-label {
+            font-size: 0.9rem;
+            color: #888;
+            margin-top: 4px;
+        }
+
+        .stat-item .stat-icon {
+            font-size: 2rem;
+            color: var(--gold-matte-light);
+            margin-bottom: 8px;
+        }
+
+        /* ===== УСЛУГИ ПО СТИЛЯМ ===== */
+        .services-section {
+            margin: 60px 0;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--graphite);
+            text-align: center;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: #888;
+            font-size: 1.1rem;
+            margin-bottom: 48px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .service-card {
+            background: white;
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0, 0, 0, 0.02);
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.12);
+        }
+
+        .service-card .service-img {
+            width: 100%;
+            height: 240px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .service-card .service-img .service-tag {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: var(--gold-matte);
+            padding: 4px 14px;
+            border-radius: 40px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: var(--graphite);
+            letter-spacing: 0.5px;
+        }
+
+        .service-card .service-img .service-tag.popular {
+            background: #1A1C1E;
+            color: white;
+        }
+
+        .service-card .service-body {
+            padding: 24px 28px 28px;
+        }
+
+        .service-card .service-body .service-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .service-card .service-body .service-title span {
+            color: var(--gold-matte);
+        }
+
+        .service-card .service-body .service-desc {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.5;
+            margin: 8px 0 16px;
+        }
+
+        .service-card .service-body .service-features {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+
+        .service-card .service-body .service-features .feature {
+            font-size: 0.85rem;
+            color: #555;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .service-card .service-body .service-features .feature i {
+            color: var(--gold-matte);
+            width: 18px;
+        }
+
+        .service-card .service-body .service-price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--graphite);
+            margin: 12px 0 16px;
+        }
+
+        .service-card .service-body .service-price small {
+            font-weight: 400;
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .service-card .service-body .service-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .service-card .service-body .service-actions .btn-gold-small {
+            background: var(--gold-matte);
+            border: none;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--graphite);
+            cursor: pointer;
+            transition: 0.2s;
+            flex: 1;
+        }
+
+        .service-card .service-body .service-actions .btn-gold-small:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(197, 162, 103, 0.3);
+        }
+
+        .service-card .service-body .service-actions .btn-outline-small {
+            background: transparent;
+            border: 1.5px solid var(--gold-matte);
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--gold-matte);
+            cursor: pointer;
+            transition: 0.2s;
+            flex: 1;
+        }
+
+        .service-card .service-body .service-actions .btn-outline-small:hover {
+            background: var(--gold-matte);
+            color: var(--graphite);
+        }
+
+        /* ===== ПРОЦЕСС РАБОТЫ ===== */
+        .process-section {
+            margin: 80px 0;
+            background: white;
+            border-radius: 32px;
+            padding: 60px 48px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0, 0, 0, 0.02);
+        }
+
+        .process-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-top: 40px;
+        }
+
+        .process-step {
+            text-align: center;
+            position: relative;
+        }
+
+        .process-step:not(:last-child)::after {
+            content: '→';
+            position: absolute;
+            right: -20px;
+            top: 40px;
+            font-size: 1.5rem;
+            color: var(--gold-matte);
+            opacity: 0.4;
+        }
+
+        .process-step .step-number {
+            width: 56px;
+            height: 56px;
+            border-radius: 100%;
+            background: var(--gold-matte);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--graphite);
+            margin: 0 auto 16px;
+        }
+
+        .process-step .step-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .process-step .step-desc {
+            font-size: 0.85rem;
+            color: #888;
+            line-height: 1.4;
+        }
+
+        /* ===== ГАЛЕРЕЯ РАБОТ ===== */
+        .gallery-section {
+            margin: 80px 0;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .gallery-item {
+            border-radius: 20px;
+            overflow: hidden;
+            height: 260px;
+            background-size: cover;
+            background-position: center;
+            transition: 0.3s;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.02);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+        }
+
+        .gallery-item .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.6));
+            color: white;
+            font-weight: 500;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: 0.3s;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        .gallery-item.tall {
+            height: 340px;
+        }
+
+        /* ===== ОТЗЫВЫ ===== */
+        .testimonials-section {
+            margin: 80px 0;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .testimonial-card {
+            background: white;
+            border-radius: 28px;
+            padding: 32px 28px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0, 0, 0, 0.02);
+            transition: 0.2s;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.06);
+        }
+
+        .testimonial-card .testimonial-text {
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #333;
+            margin-bottom: 16px;
+        }
+
+        .testimonial-card .testimonial-text::before {
+            content: '"';
+            font-size: 2.5rem;
+            color: var(--gold-matte);
+            line-height: 1;
+            margin-right: 4px;
+        }
+
+        .testimonial-card .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            border-top: 1px solid #f0eee9;
+            padding-top: 16px;
+        }
+
+        .testimonial-card .testimonial-author .avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 100%;
+            background: var(--gold-matte-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--gold-matte);
+        }
+
+        .testimonial-card .testimonial-author .author-info h4 {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .testimonial-card .testimonial-author .author-info p {
+            font-size: 0.75rem;
+            color: #999;
+        }
+
+        /* ===== CTA БЛОК ===== */
+        .cta-section {
+            background: var(--graphite);
+            border-radius: 32px;
+            padding: 60px 48px;
+            margin: 80px 0;
+            text-align: center;
+            border: 1px solid rgba(197, 162, 103, 0.3);
+        }
+
+        .cta-section h2 {
+            color: white;
+            font-size: 2.4rem;
+            font-weight: 600;
+        }
+
+        .cta-section h2 span {
+            color: var(--gold-matte);
+        }
+
+        .cta-section p {
+            color: #aaa;
+            font-size: 1.1rem;
+            margin: 16px 0 32px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-section .cta-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-section .cta-buttons .btn-gold-big {
+            background: var(--gold-matte);
+            border: none;
+            padding: 14px 40px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--graphite);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .cta-section .cta-buttons .btn-gold-big:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(197, 162, 103, 0.3);
+        }
+
+        .cta-section .cta-buttons .btn-outline-big {
+            background: transparent;
+            border: 1.5px solid var(--gold-matte);
+            padding: 14px 40px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--gold-matte);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .cta-section .cta-buttons .btn-outline-big:hover {
+            background: var(--gold-matte);
+            color: var(--graphite);
+        }
+
+        /* ===== ФУТЕР ===== */
+        .footer {
+            padding: 60px 0 50px;
+            border-top: 1px solid rgba(26, 28, 30, 0.1);
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+
+        .footer-col p {
+            color: #2b2d30;
+            font-size: 0.85rem;
+            margin-top: 12px;
+        }
+
+        .social-icons i {
+            font-size: 1.4rem;
+            margin-right: 24px;
+            color: var(--gold-matte);
+            transition: 0.2s;
+        }
+        .social-icons i:hover {
+            color: var(--graphite);
+        }
+
+        .gold-divider {
+            width: 70px;
+            height: 1px;
+            background: var(--gold-matte);
+            margin: 16px 0;
+        }
+
+        /* ===== МОДАЛЬНОЕ ОКНО ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-window {
+            background: white;
+            border-radius: 32px;
+            max-width: 520px;
+            width: 92%;
+            padding: 48px 40px 40px;
+            position: relative;
+            box-shadow: 0 40px 60px -20px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(197, 162, 103, 0.2);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 24px;
+            font-size: 1.6rem;
+            color: #999;
+            cursor: pointer;
+            transition: 0.2s;
+            background: none;
+            border: none;
+            line-height: 1;
+        }
+        .modal-close:hover {
+            color: var(--graphite);
+            transform: rotate(90deg);
+        }
+
+        .modal-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--graphite);
+        }
+
+        .modal-subtitle {
+            color: #666;
+            margin-bottom: 28px;
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+            color: var(--graphite);
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 16px;
+            border: 1.5px solid #e8e6e2;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: 0.2s;
+            background: #faf9f7;
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: var(--gold-matte);
+            box-shadow: 0 0 0 4px rgba(197, 162, 103, 0.15);
+            background: white;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-btn {
+            background: var(--graphite);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            width: 100%;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.25s;
+            letter-spacing: 0.3px;
+        }
+        .form-btn:hover {
+            background: var(--gold-matte);
+            color: var(--graphite);
+            transform: translateY(-2px);
+        }
+
+        .form-hint {
+            font-size: 0.75rem;
+            color: #999;
+            text-align: center;
+            margin-top: 18px;
+        }
+        .form-hint i {
+            color: var(--gold-matte);
+        }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: #1A1C1E;
+            color: #C5A267;
+            padding: 14px 28px;
+            border-radius: 60px;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+            z-index: 9999;
+            border: 1px solid #C5A267;
+            font-size: 0.85rem;
+            box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.1);
+            max-width: 92%;
+            display: none;
+        }
+
+        .toast.show {
+            display: block;
+            animation: fadeInUp 0.3s ease;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1100px) {
+            .container { padding: 0 28px; }
+            .services-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .stats-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .process-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .process-step:not(:last-child)::after {
+                display: none;
+            }
+            .testimonials-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 700px) {
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+            .gallery-item.tall {
+                height: 260px;
+            }
+            .stats-row {
+                grid-template-columns: 1fr 1fr;
+            }
+            .process-grid {
+                grid-template-columns: 1fr;
+            }
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+            .nav-menu {
+                gap: 1rem;
+            }
+            .page-hero h1 {
+                font-size: 2.2rem;
+            }
+            .section-title {
+                font-size: 1.6rem;
+            }
+            .process-section {
+                padding: 40px 24px;
+            }
+            .cta-section {
+                padding: 40px 24px;
+            }
+            .cta-section h2 {
+                font-size: 1.6rem;
+            }
+            .header {
+                padding: 20px 0 16px;
+            }
+            .logo-area h1 {
+                font-size: 1.4rem;
+            }
+            .modal-window {
+                padding: 32px 24px 28px;
+            }
+            .stat-item .stat-number {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ===== ШАПКА ===== -->
+    <div class="header">
+        <div class="container">
+            <div class="header-row">
+                <div class="logo-area">
+                    <a href="index.html">
+                        <h1>GALLERY OF SPACES</h1>
+                        <p>Галерея Пространств</p>
+                    </a>
+                </div>
+                <div class="right-actions">
+                    <button class="btn-ghost">Вход</button>
+                    <button class="btn-gold-circle" id="openModalBtnHeader">+</button>
+                </div>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html">Главная</a>
+                <a href="#">Продажа</a>
+                <a href="#">Покупка</a>
+                <a href="#">Аренда</a>
+                <a href="#">Строительство ИЖС</a>
+                <a href="#" class="active">Хоумстейджинг</a>
+                <a href="#">Ремонт</a>
+                <a href="#">О нас</a>
+                <a href="#">Контакты</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== ОСНОВНОЙ КОНТЕНТ ===== -->
+    <main>
+        <div class="container">
+            <!-- ===== ГЕРОЙ ===== -->
+            <div class="page-hero">
+                <div class="breadcrumbs">
+                    <a href="index.html">Главная</a> / Хоумстейджинг
+                </div>
+                <h1>Хоумстейджинг</h1>
+                <p>Профессиональная подготовка объектов к продаже. Создаём интерьеры, которые вдохновляют покупателей на покупку.</p>
+            </div>
+
+            <!-- ===== СТАТИСТИКА ===== -->
+            <div class="stats-row">
+                <div class="stat-item">
+                    <div class="stat-icon"><i class="fas fa-home"></i></div>
+                    <div class="stat-number">500+</div>
+                    <div class="stat-label">Успешных проектов</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                    <div class="stat-number">14 дней</div>
+                    <div class="stat-label">Средний срок подготовки</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon"><i class="fas fa-rocket"></i></div>
+                    <div class="stat-number">30%</div>
+                    <div class="stat-label">Рост стоимости объекта</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon"><i class="fas fa-star"></i></div>
+                    <div class="stat-number">4.9</div>
+                    <div class="stat-label">Средний рейтинг</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== УСЛУГИ ПО СТИЛЯМ ===== -->
+        <div class="container">
+            <div class="services-section">
+                <div class="section-title">Стили интерьера</div>
+                <div class="section-subtitle">Выберите направление, которое подходит вашему объекту</div>
+
+                <div class="services-grid">
+                    <!-- Стиль 1: Современный -->
+                    <div class="service-card">
+                        <div class="service-img" style="background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80');">
+                            <span class="service-tag popular">Популярный</span>
+                        </div>
+                        <div class="service-body">
+                            <div class="service-title">Современный <span>минимализм</span></div>
+                            <div class="service-desc">Чистые линии, светлые тона, функциональность. Идеально для современных квартир и апартаментов.</div>
+                            <div class="service-features">
+                                <div class="feature"><i class="fas fa-check-circle"></i> Светлая палитра</div>
+                                <div class="feature"><i class="fas fa-check-circle"></i> Скрытое хранение</div>
+                                <div class="feature"><i class="fas fa-check-circle"></i> Акцентные элементы</div>
+                            </div>
+                            <div class="service-price">от 45 000 ₽ <small>/ комната</small></div>
+                            <div class="service-actions">
+                                <button class="btn-gold-small" onclick="openModal('Современный минимализм')">Заказать</button>
+                                <button class="btn-outline-small" onclick="showToast('📸 Портфолио современного минимализма (демо)')">Портфолио</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Стиль 2: Классический -->
+                    <div class="service-card">
+                        <div class="service-img" style="background-image: url('https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=600&q=80');">
+                            <span class="service-tag">Премиум</span>
+                        </div>
+                        <div class="service-body">
+                            <div class="service-title">Классический <span>европейский</span></div>
+                            <div class="service-desc">Элегантность, благородные материалы, винтажные акценты. Для ценителей традиционного стиля.</div>
+                            <div class="service-features">
+                                <div class="feature"><i class="fas fa-check-circle"></i> Натуральное дерево</div>
+                                <div class="feature"><i class="fas fa-check-circle"></i> Лепнина и молдинги</div>
+                                <div class="feature"><i class="fas fa-check-circle"></i> Тканевые обои</div>
+                            </div>
+                            <div class="service-price">от 65 000 ₽ <small>/ комната</small></div>
+                            <div class="service-actions">
+                                <button class="btn-gold-small" onclick="openModal('Классический европейский')">Заказать</button>
+                                <button class="btn-outline-small" onclick="showToast('📸 Портфолио классического стиля (демо)')">Портфолио</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Стиль 3: Скандинавский -->
+                    <div class="service-card">
+                        <div class="service-img" style="background-image: url('https://images.unsplash.com/photo-1600585152915-d208bec867a1?w=600&q=80');">
+                            <span class="service-tag">Уютный</span>
+                        </div>
+                        <div class="service-body">
+                            <div class="service-title">Скандинавский <span>hygge</span></div>
+                            <div class="service-desc">Максимум света, натуральные текстуры, уютная атмосфера. Создаёт ощущение тепла и комфорта.</div>
+                            <div class="service-features">
+                                <div class="feature"><i class="fas fa-check-circle"></i> Белые стены</div>
+                                <div class="feature"><i class="fas fa-check-circle"></i> Деревянные акценты</div>
+                                <div class="feature"><i class="fas fa-check-circle"></i> Тёплый текстиль</div>
+                            </div>
+                            <div class="service-price">от 40 000 ₽ <small>/ комната</small></div>
+                            <div class="service-actions">
+                                <button class="btn-gold-small" onclick="openModal('Скандинавский hygge')">Заказать</button>
+                                <button class="btn-outline-small" onclick="showToast('📸 Портфолио скандинавского стиля (демо)')">Портфолио</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Стиль 4: Лофт -->
+                    <div class="service-card">
+                        <div class="service-img" style="background-image: url('https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=600&q=80');">
+                            <span class="service-tag">Индустриальный</span>
+                        </div>
+                        <div class="service-body">
+                            <div class="service-title">Лофт <span>индустриальный</span></div>
+                            <div class="service-desc">Грубые текстуры, открытые коммуникации, кирпичные стены. Для смелых и нестандартных решений.</div>
+                            <div class="service-features">
+                                <div class="feature"><i class="fas fa-check-circle"></i> Кирпичные стены</div>
+                                <div class="feature"><i class="fas fa-check-circle"></i> Металлические акценты</div>
+                                <div class="feature"><i class="fas fa-check-circle"></i> Открытые трубы</div>
+                            </div>
+                            <div class="service-price">от 50 000 ₽ <small>/ комната</small></div>
+                            <div class="service-actions">
+                                <button class="btn-gold-small" onclick="openModal('Лофт индустриальный')">Заказать</button>
+                                <button class="btn-outline-small" onclick="showToast('📸 Портфолио лофт (демо)')">Портфолио</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Стиль 5: Ар-деко -->
+                    <div class="service-card">
+                        <div class="service-img" style="background-image: url('https://images.unsplash.com/photo-1600607688969-a5bfcd646154?w=600&q=80');">
+                            <span class="service-tag">Роскошный</span>
+                        </div>
+                        <div class="service-body">
+                            <div class="service-title">Ар-деко <span>гламур</span></div>
+                            <div class="service-desc">Шик, блеск, геометрические узоры и дорогие материалы. Для самых изысканных интерьеров.</div>
+                            <div class="service-features">
+                                <div class="feature"><i class="fas fa-check-circle"></i> Золотые акценты</div>
+                                <div class="feature"><i class="fas fa-check-circle"></i> Мрамор и стекло</div>
+                                <div class="feature"><i class="fas fa-check-circle"></i> Геометричные узоры</div>
+                            </div>
+                            <div class="service-price">от 80 000 ₽ <small>/ комната</small></div>
+                            <div class="service-actions">
+                                <button class="btn-gold-small" onclick="openModal('Ар-деко гламур')">Заказать</button>
+                                <button class="btn-outline-small" onclick="showToast('📸 Портфолио ар-деко (демо)')">Портфолио</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Стиль 6: Эко -->
+                    <div class="service-card">
+                        <div class="service-img" style="background-image: url('https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=600&q=80');">
+                            <span class="service-tag">Натуральный</span>
+                        </div>
+                        <div class="service-body">
+                            <div class="service-title">Эко <span>натуральный</span></div>
+                            <div class="service-desc">Природные материалы, живые растения, земляные оттенки. Гармония с природой в каждой детали.</div>
+                            <div class="service-features">
+                                <div class="feature"><i class="fas fa-check-circle"></i> Натуральное дерево</div>
+                                <div class="feature"><i class="fas fa-check-circle"></i> Живые растения</div>
+                                <div class="feature"><i class="fas fa-check-circle"></i> Земляные тона</div>
+                            </div>
+                            <div class="service-price">от 55 000 ₽ <small>/ комната</small></div>
+                            <div class="service-actions">
+                                <button class="btn-gold-small" onclick="openModal('Эко натуральный')">Заказать</button>
+                                <button class="btn-outline-small" onclick="showToast('📸 Портфолио эко-стиля (демо)')">Портфолио</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== ПРОЦЕСС РАБОТЫ ===== -->
+        <div class="container">
+            <div class="process-section">
+                <div class="section-title">Как мы работаем</div>
+                <div class="section-subtitle">Четыре простых шага к идеальному интерьеру</div>
+
+                <div class="process-grid">
+                    <div class="process-step">
+                        <div class="step-number">1</div>
+                        <div class="step-title">Консультация</div>
+                        <div class="step-desc">Обсуждаем задачи, стиль и бюджет. Анализируем объект.</div>
+                    </div>
+                    <div class="process-step">
+                        <div class="step-number">2</div>
+                        <div class="step-title">Дизайн-проект</div>
+                        <div class="step-desc">Разрабатываем концепцию, визуализацию и план работ.</div>
+                    </div>
+                    <div class="process-step">
+                        <div class="step-number">3</div>
+                        <div class="step-title">Реализация</div>
+                        <div class="step-desc">Подбираем мебель, декор, выполняем все работы.</div>
+                    </div>
+                    <div class="process-step">
+                        <div class="step-number">4</div>
+                        <div class="step-title">Презентация</div>
+                        <div class="step-desc">Сдаём объект с профессиональной фотосъёмкой.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== ГАЛЕРЕЯ РАБОТ ===== -->
+        <div class="container">
+            <div class="gallery-section">
+                <div class="section-title">Наши работы</div>
+                <div class="section-subtitle">Реальные проекты, которые мы реализовали</div>
+
+                <div class="gallery-grid">
+                    <div class="gallery-item" style="background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&q=80');" onclick="showToast('📸 Современный минимализм')">
+                        <div class="gallery-overlay">Современный минимализм</div>
+                    </div>
+                    <div class="gallery-item" style="background-image: url('https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=400&q=80');" onclick="showToast('📸 Классический стиль')">
+                        <div class="gallery-overlay">Классический стиль</div>
+                    </div>
+                    <div class="gallery-item" style="background-image: url('https://images.unsplash.com/photo-1600585152915-d208bec867a1?w=400&q=80');" onclick="showToast('📸 Скандинавский hygge')">
+                        <div class="gallery-overlay">Скандинавский hygge</div>
+                    </div>
+                    <div class="gallery-item" style="background-image: url('https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=400&q=80');" onclick="showToast('📸 Лофт индустриальный')">
+                        <div class="gallery-overlay">Лофт индустриальный</div>
+                    </div>
+                    <div class="gallery-item" style="background-image: url('https://images.unsplash.com/photo-1600607688969-a5bfcd646154?w=400&q=80');" onclick="showToast('📸 Ар-деко гламур')">
+                        <div class="gallery-overlay">Ар-деко гламур</div>
+                    </div>
+                    <div class="gallery-item" style="background-image: url('https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=400&q=80');" onclick="showToast('📸 Эко натуральный')">
+                        <div class="gallery-overlay">Эко натуральный</div>
+                    </div>
+                    <div class="gallery-item" style="background-image: url('https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=400&q=80');" onclick="showToast('📸 Современный минимализм')">
+                        <div class="gallery-overlay">Современный минимализм</div>
+                    </div>
+                    <div class="gallery-item" style="background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&q=80');" onclick="showToast('📸 Классический стиль')">
+                        <div class="gallery-overlay">Классический стиль</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== ОТЗЫВЫ ===== -->
+        <div class="container">
+            <div class="testimonials-section">
+                <div class="section-title">Отзывы клиентов</div>
+                <div class="section-subtitle">Что говорят о нашей работе</div>
+
+                <div class="testimonials-grid">
+                    <div class="testimonial-card">
+                        <div class="testimonial-text">Результат превзошёл все ожидания! Квартира преобразилась до неузнаваемости. Продали в два раза быстрее, чем планировали.</div>
+                        <div class="testimonial-author">
+                            <div class="avatar">АН</div>
+                            <div class="author-info">
+                                <h4>Анна Новикова</h4>
+                                <p>Продажа квартиры, современный стиль</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="testimonial-text">Очень профессиональный подход. Учли все наши пожелания по скандинавскому стилю. Спасибо за комфорт и уют!</div>
+                        <div class="testimonial-author">
+                            <div class="avatar">МГ</div>
+                            <div class="author-info">
+                                <h4>Михаил Громов</h4>
+                                <p>Ремонт квартиры, скандинавский стиль</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="testimonial-text">Великолепная работа! Интерьер в стиле ар-деко получился роскошным. Клиенты были в восторге и купили объект за 3 дня.</div>
+                        <div class="testimonial-author">
+                            <div class="avatar">ЕЛ</div>
+                            <div class="author-info">
+                                <h4>Елизавета Демидова</h4>
+                                <p>Продажа пентхауса, ар-деко</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== CTA БЛОК ===== -->
+        <div class="container">
+            <div class="cta-section">
+                <h2>Создайте <span>идеальный интерьер</span> для продажи</h2>
+                <p>Оставьте заявку на бесплатную консультацию и получите персональное предложение по хоумстейджингу.</p>
+                <div class="cta-buttons">
+                    <button class="btn-gold-big" onclick="openModal('Бесплатная консультация')">Получить консультацию</button>
+                    <button class="btn-outline-big" onclick="showToast('📂 Загружен каталог стилей (демо)')">Скачать каталог стилей</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== ФУТЕР ===== -->
+        <div class="container">
+            <div class="footer">
+                <div class="footer-col">
+                    <h3 style="font-weight: 600;">GALLERY OF SPACES</h3>
+                    <div class="gold-divider"></div>
+                    <p>© 2026 Агентство премиальной недвижимости<br>Галерея Пространств</p>
+                </div>
+                <div class="footer-col social-icons">
+                    <i class="fab fa-telegram"></i>
+                    <i class="fab fa-instagram"></i>
+                    <i class="fab fa-behance"></i>
+                    <div class="gold-divider"></div>
+                    <p>+7 (495) 999-23-23<br>hello@gallery-spaces.com</p>
+                </div>
+                <div class="footer-col">
+                    <p style="font-weight: 500;">Работаем с токенами, криптовалютой, эскроу</p>
+                    <div class="gold-divider"></div>
+                    <p style="font-size: 0.7rem;">Лицензия № 7892</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ===== МОДАЛЬНОЕ ОКНО ===== -->
+    <div class="modal-overlay" id="feedbackModal">
+        <div class="modal-window">
+            <button class="modal-close" id="closeModalBtn">&times;</button>
+            <div class="modal-title">Заказать хоумстейджинг</div>
+            <div class="modal-subtitle" id="modalServiceName">Выберите стиль и оставьте заявку</div>
+
+            <form id="feedbackForm">
+                <div class="form-group">
+                    <label for="modalName">Ваше имя</label>
+                    <input type="text" id="modalName" placeholder="Александр" required>
+                </div>
+                <div class="form-group">
+                    <label for="modalPhone">Телефон</label>
+                    <input type="tel" id="modalPhone" placeholder="+7 (999) 123-45-67" required>
+                </div>
+                <div class="form-group">
+                    <label for="modalStyle">Выберите стиль</label>
+                    <select id="modalStyle">
+                        <option value="Современный минимализм">Современный минимализм</option>
+                        <option value="Классический европейский">Классический европейский</option>
+                        <option value="Скандинавский hygge">Скандинавский hygge</option>
+                        <option value="Лофт индустриальный">Лофт индустриальный</option>
+                        <option value="Ар-деко гламур">Ар-деко гламур</option>
+                        <option value="Эко натуральный">Эко натуральный</option>
+                        <option value="Не определился">Не определился, нужна консультация</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="modalMessage">Дополнительная информация</label>
+                    <textarea id="modalMessage" placeholder="Расскажите о вашем объекте..."></textarea>
+                </div>
+                <button type="submit" class="form-btn">Отправить заявку</button>
+                <div class="form-hint">
+                    <i class="fas fa-lock"></i> Ваши данные защищены и не передаются третьим лицам
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===== TOAST ===== -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // =============================================
+        // ПОКАЗ TOAST
+        // =============================================
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message || '✅ Успешно!';
+            toast.classList.add('show');
+            clearTimeout(toast._timeout);
+            toast._timeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // =============================================
+        // МОДАЛЬНОЕ ОКНО
+        // =============================================
+        const modal = document.getElementById('feedbackModal');
+        const closeBtn = document.getElementById('closeModalBtn');
+
+        function openModal(serviceName) {
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            if (serviceName) {
+                document.getElementById('modalServiceName').textContent = `Стиль: ${serviceName}`;
+                const select = document.getElementById('modalStyle');
+                for (let option of select.options) {
+                    if (option.value === serviceName) {
+                        select.value = serviceName;
+                        break;
+                    }
+                }
+            }
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        closeBtn.addEventListener('click', closeModal);
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        // =============================================
+        // ОТПРАВКА ФОРМЫ
+        // =============================================
+        const form = document.getElementById('feedbackForm');
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const name = document.getElementById('modalName').value.trim();
+            const phone = document.getElementById('modalPhone').value.trim();
+
+            if (!name || !phone) {
+                showToast('⚠️ Пожалуйста, заполните имя и телефон.');
+                return;
+            }
+
+            const btn = form.querySelector('.form-btn');
+            const originalText = btn.textContent;
+            btn.textContent = 'Отправка...';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                showToast('✅ Заявка отправлена! Наш специалист свяжется с вами.');
+                form.reset();
+                btn.textContent = originalText;
+                btn.disabled = false;
+                closeModal();
+            }, 1500);
+        });
+
+        // =============================================
+        // КЛИК НА КНОПКУ "+" В ШАПКЕ
+        // =============================================
+        document.querySelector('.btn-gold-circle').addEventListener('click', () => {
+            openModal('Бесплатная консультация');
+        });
+
+        // =============================================
+        // КЛИК ПО КАРТИНКАМ ГАЛЕРЕИ - УВЕЛИЧЕНИЕ
+        // =============================================
+        document.querySelectorAll('.gallery-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const label = this.querySelector('.gallery-overlay')?.textContent || 'Фото';
+                showToast(`🖼️ Открытие галереи: ${label} (демо)`);
+            });
+        });
+    </script>
+</body>
+</html>

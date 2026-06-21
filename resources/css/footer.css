@@ -1,0 +1,59 @@
+/* Footer — canonical styles from templ/site/index.html (loaded last to override page duplicates) */
+
+.site-footer .footer {
+    padding: 60px 0 50px;
+    border-top: 1px solid rgba(26, 28, 30, 0.1);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 40px;
+}
+
+.site-footer .footer-col p {
+    color: #2b2d30;
+    font-size: 0.85rem;
+    margin-top: 12px;
+}
+
+.site-footer .social-icons i {
+    font-size: 1.4rem;
+    margin-right: 24px;
+    color: var(--gold-matte);
+    transition: 0.2s;
+    cursor: pointer;
+}
+
+.site-footer .social-icons i:hover {
+    color: var(--graphite);
+}
+
+.site-footer .gold-divider {
+    width: 70px;
+    height: 1px;
+    background: var(--gold-matte);
+    margin: 16px 0;
+}
+
+.site-footer .footer-slogan {
+    font-size: 1.2rem;
+    font-weight: 300;
+    letter-spacing: 4px;
+    color: var(--gold-matte);
+    margin-bottom: 8px;
+}
+
+.site-footer .footer-slogan span {
+    font-weight: 400;
+}
+
+@media (max-width: 700px) {
+    .site-footer .footer-slogan {
+        font-size: 0.9rem;
+        letter-spacing: 2px;
+    }
+
+    .site-footer .footer {
+        flex-direction: column;
+        gap: 32px;
+    }
+}

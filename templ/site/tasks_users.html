@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Личный кабинет | Галерея Пространств</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #F2F2F0;
+            font-family: 'Inter', sans-serif;
+            color: #1A1C1E;
+            line-height: 1.2;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        :root {
+            --graphite: #1A1C1E;
+            --light-gray-bg: #F2F2F0;
+            --gold-matte: #C5A267;
+            --gold-matte-light: rgba(197, 162, 103, 0.2);
+            --card-white: #FFFFFF;
+        }
+
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 48px;
+        }
+
+        /* ===== ШАПКА ===== */
+        .header {
+            padding: 32px 0 24px;
+            border-bottom: 1px solid rgba(26, 28, 30, 0.08);
+            background-color: var(--light-gray-bg);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo-area h1 {
+            font-size: 1.9rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: var(--graphite);
+        }
+
+        .logo-area p {
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            color: var(--gold-matte);
+            font-weight: 500;
+            margin-top: 4px;
+        }
+
+        .logo-area a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 28px;
+            margin-bottom: 10px;
+            border-top: 1px solid rgba(26, 28, 30, 0.05);
+            padding-top: 24px;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            color: var(--graphite);
+            transition: 0.2s;
+            letter-spacing: -0.2px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid transparent;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            color: var(--gold-matte);
+            border-bottom-color: var(--gold-matte);
+        }
+
+        .right-actions {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .user-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 100%;
+            background: var(--gold-matte);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--graphite);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.2s;
+            border: 2px solid transparent;
+        }
+
+        .user-avatar:hover {
+            border-color: var(--gold-matte);
+            transform: scale(1.05);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            border: 1px solid var(--graphite);
+            padding: 8px 24px;
+            font-weight: 500;
+            border-radius: 40px;
+            color: var(--graphite);
+            cursor: pointer;
+            transition: 0.2s;
+            text-decoration: none;
+        }
+        .btn-ghost:hover {
+            background: var(--graphite);
+            color: white;
+        }
+
+        .btn-gold-circle {
+            background: var(--gold-matte);
+            border: none;
+            width: 42px;
+            height: 42px;
+            border-radius: 100%;
+            color: var(--graphite);
+            font-size: 1.4rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-gold-circle:hover {
+            transform: scale(1.05);
+        }
+
+        /* ===== ПРОФИЛЬ ===== */
+        .profile-wrapper {
+            flex: 1;
+            padding: 40px 0 60px;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 40px;
+        }
+
+        /* ===== САЙДБАР ===== */
+        .profile-sidebar {
+            background: white;
+            border-radius: 28px;
+            padding: 32px 24px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.02);
+            height: fit-content;
+            position: sticky;
+            top: 140px;
+        }
+
+        .profile-avatar {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .profile-avatar .avatar-circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 100%;
+            background: var(--gold-matte-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 2.8rem;
+            font-weight: 600;
+            color: var(--gold-matte);
+            border: 3px solid var(--gold-matte);
+        }
+
+        .profile-avatar h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .profile-avatar p {
+            color: #888;
+            font-size: 0.85rem;
+            margin-top: 4px;
+        }
+
+        .profile-menu {
+            list-style: none;
+            border-top: 1px solid #f0eee9;
+            padding-top: 20px;
+        }
+
+        .profile-menu li {
+            margin-bottom: 4px;
+        }
+
+        .profile-menu a {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            border-radius: 16px;
+            text-decoration: none;
+            color: #555;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: 0.2s;
+        }
+
+        .profile-menu a i {
+            width: 20px;
+            color: #aaa;
+            transition: 0.2s;
+        }
+
+        .profile-menu a:hover {
+            background: var(--gold-matte-light);
+            color: var(--graphite);
+        }
+
+        .profile-menu a:hover i {
+            color: var(--gold-matte);
+        }
+
+        .profile-menu a.active {
+            background: var(--gold-matte-light);
+            color: var(--graphite);
+        }
+
+        .profile-menu a.active i {
+            color: var(--gold-matte);
+        }
+
+        .profile-menu .badge {
+            margin-left: auto;
+            background: var(--gold-matte);
+            color: var(--graphite);
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 2px 10px;
+            border-radius: 40px;
+        }
+
+        .logout-btn {
+            margin-top: 16px;
+            border-top: 1px solid #f0eee9;
+            padding-top: 16px;
+        }
+
+        .logout-btn a {
+            color: #e74c3c !important;
+        }
+
+        .logout-btn a i {
+            color: #e74c3c !important;
+        }
+
+        .logout-btn a:hover {
+            background: rgba(231, 76, 60, 0.08) !important;
+        }
+
+        /* ===== ОСНОВНОЙ КОНТЕНТ ===== */
+        .profile-content {
+            background: white;
+            border-radius: 28px;
+            padding: 36px 40px 40px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.02);
+        }
+
+        .profile-content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .profile-content-header h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+
+        .profile-content-header .order-count {
+            color: #888;
+            font-size: 0.9rem;
+            font-weight: 400;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 28px;
+        }
+
+        .filter-tabs button {
+            padding: 8px 20px;
+            border-radius: 40px;
+            border: 1.5px solid #e8e6e2;
+            background: transparent;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #666;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .filter-tabs button:hover {
+            border-color: var(--gold-matte);
+            color: var(--graphite);
+        }
+
+        .filter-tabs button.active {
+            background: var(--gold-matte);
+            border-color: var(--gold-matte);
+            color: var(--graphite);
+        }
+
+        /* ===== КАРТОЧКИ ЗАКАЗОВ ===== */
+        .orders-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .order-card {
+            background: #faf9f7;
+            border-radius: 20px;
+            padding: 24px 28px;
+            border: 1px solid #f0eee9;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+
+        .order-card:hover {
+            border-color: var(--gold-matte);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+        }
+
+        .order-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .order-card-header .order-id {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .order-card-header .order-id span {
+            color: #888;
+            font-weight: 400;
+        }
+
+        .order-status {
+            padding: 4px 14px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        .order-status.active {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .order-status.completed {
+            background: #cce5ff;
+            color: #004085;
+        }
+
+        .order-status.pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .order-status.cancelled {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .order-card-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .order-card-body .item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85rem;
+            color: #555;
+        }
+
+        .order-card-body .item i {
+            color: var(--gold-matte);
+            width: 18px;
+        }
+
+        .order-card-body .item strong {
+            color: var(--graphite);
+        }
+
+        .order-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding-top: 16px;
+            border-top: 1px solid #ece9e4;
+        }
+
+        .order-card-footer .price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--graphite);
+        }
+
+        .order-card-footer .price small {
+            font-size: 0.8rem;
+            font-weight: 400;
+            color: #888;
+        }
+
+        .order-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .order-actions button {
+            padding: 8px 18px;
+            border-radius: 40px;
+            border: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .order-actions .btn-detail {
+            background: var(--graphite);
+            color: white;
+        }
+
+        .order-actions .btn-detail:hover {
+            background: var(--gold-matte);
+            color: var(--graphite);
+        }
+
+        .order-actions .btn-repeat {
+            background: transparent;
+            border: 1.5px solid var(--gold-matte);
+            color: var(--gold-matte);
+        }
+
+        .order-actions .btn-repeat:hover {
+            background: var(--gold-matte);
+            color: var(--graphite);
+        }
+
+        /* ===== ПУСТОЕ СОСТОЯНИЕ ===== */
+        .empty-orders {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-orders i {
+            font-size: 4rem;
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+
+        .empty-orders h3 {
+            font-size: 1.3rem;
+            color: var(--graphite);
+            margin-bottom: 8px;
+        }
+
+        .empty-orders p {
+            color: #888;
+            font-size: 0.95rem;
+        }
+
+        .empty-orders .gold-btn {
+            margin-top: 20px;
+            display: inline-block;
+            background: var(--gold-matte);
+            border: none;
+            padding: 12px 32px;
+            font-weight: 600;
+            font-size: 1rem;
+            border-radius: 40px;
+            color: var(--graphite);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .empty-orders .gold-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(197, 162, 103, 0.3);
+        }
+
+        /* ===== ФУТЕР ===== */
+        .footer {
+            padding: 40px 0 30px;
+            border-top: 1px solid rgba(26, 28, 30, 0.1);
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: auto;
+        }
+
+        .footer-col p {
+            color: #2b2d30;
+            font-size: 0.85rem;
+            margin-top: 12px;
+        }
+
+        .social-icons i {
+            font-size: 1.4rem;
+            margin-right: 24px;
+            color: var(--gold-matte);
+            transition: 0.2s;
+        }
+        .social-icons i:hover {
+            color: var(--graphite);
+        }
+
+        .gold-divider {
+            width: 70px;
+            height: 1px;
+            background: var(--gold-matte);
+            margin: 16px 0;
+        }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: #1A1C1E;
+            color: #C5A267;
+            padding: 14px 28px;
+            border-radius: 60px;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+            z-index: 9999;
+            border: 1px solid #C5A267;
+            font-size: 0.85rem;
+            box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.1);
+            max-width: 92%;
+            display: none;
+        }
+
+        .toast.show {
+            display: block;
+            animation: fadeInUp 0.3s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1100px) {
+            .container {
+                padding: 0 28px;
+            }
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+            .profile-sidebar {
+                position: static;
+            }
+            .order-card-body {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .profile-content {
+                padding: 24px 16px 28px;
+            }
+            .profile-sidebar {
+                padding: 24px 16px;
+            }
+            .profile-content-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .order-card {
+                padding: 18px 16px;
+            }
+            .order-card-footer {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .order-actions {
+                width: 100%;
+            }
+            .order-actions button {
+                flex: 1;
+                text-align: center;
+            }
+            .nav-menu {
+                gap: 1rem;
+            }
+            .header {
+                padding: 20px 0 16px;
+            }
+            .logo-area h1 {
+                font-size: 1.4rem;
+            }
+            .filter-tabs {
+                gap: 6px;
+            }
+            .filter-tabs button {
+                padding: 6px 14px;
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ===== ШАПКА ===== -->
+    <div class="header">
+        <div class="container">
+            <div class="header-row">
+                <div class="logo-area">
+                    <a href="index.html">
+                        <h1>GALLERY OF SPACES</h1>
+                        <p>Галерея Пространств</p>
+                    </a>
+                </div>
+                <div class="right-actions">
+                    <span style="font-size: 0.85rem; color: #888; display: none;">Александр И.</span>
+                    <div class="user-avatar" onclick="showToast('👤 Профиль пользователя')">АИ</div>
+                    <a href="login.html" class="btn-ghost" style="display: none;">Вход</a>
+                    <button class="btn-gold-circle">+</button>
+                </div>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html">Главная</a>
+                <a href="#">Продажа</a>
+                <a href="#">Покупка</a>
+                <a href="#">Аренда</a>
+                <a href="#">Строительство ИЖС</a>
+                <a href="#">Хоумстейджинг</a>
+                <a href="#">Ремонт</a>
+                <a href="#">О нас</a>
+                <a href="#" class="active">Личный кабинет</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== ПРОФИЛЬ ===== -->
+    <div class="profile-wrapper">
+        <div class="container">
+            <div class="profile-grid">
+                <!-- Сайдбар -->
+                <aside class="profile-sidebar">
+                    <div class="profile-avatar">
+                        <div class="avatar-circle">АИ</div>
+                        <h3>Александр Иванов</h3>
+                        <p>alex@example.com</p>
+                    </div>
+                    <ul class="profile-menu">
+                        <li><a href="#" class="active"><i class="fas fa-shopping-bag"></i> Мои заказы <span class="badge">6</span></a></li>
+                        <li><a href="#"><i class="fas fa-heart"></i> Избранное</a></li>
+                        <li><a href="#"><i class="fas fa-user"></i> Личные данные</a></li>
+                        <li><a href="#"><i class="fas fa-bell"></i> Уведомления</a></li>
+                        <li><a href="#"><i class="fas fa-credit-card"></i> Платежи</a></li>
+                        <li><a href="#"><i class="fas fa-history"></i> История просмотров</a></li>
+                    </ul>
+                    <div class="logout-btn">
+                        <a href="login.html" style="color: #e74c3c !important;"><i class="fas fa-sign-out-alt"></i> Выйти</a>
+                    </div>
+                </aside>
+
+                <!-- Основной контент -->
+                <main class="profile-content">
+                    <div class="profile-content-header">
+                        <div>
+                            <h2>Мои заказы</h2>
+                            <span class="order-count">Всего заказов: 6</span>
+                        </div>
+                    </div>
+
+                    <!-- Фильтры -->
+                    <div class="filter-tabs">
+                        <button class="active" data-filter="all">Все</button>
+                        <button data-filter="active">Активные</button>
+                        <button data-filter="pending">В обработке</button>
+                        <button data-filter="completed">Завершённые</button>
+                        <button data-filter="cancelled">Отменённые</button>
+                    </div>
+
+                    <!-- Список заказов -->
+                    <div class="orders-list" id="ordersList">
+                        <!-- Заказ 1 -->
+                        <div class="order-card" data-status="active">
+                            <div class="order-card-header">
+                                <div class="order-id">Заказ #<span>GSP-2026-001</span></div>
+                                <span class="order-status active">Активный</span>
+                            </div>
+                            <div class="order-card-body">
+                                <div class="item"><i class="fas fa-building"></i> Резиденция «Акант»</div>
+                                <div class="item"><i class="fas fa-calendar-alt"></i> <strong>Дата:</strong> 12.06.2026</div>
+                                <div class="item"><i class="fas fa-ruler-combined"></i> <strong>Площадь:</strong> 180 м²</div>
+                                <div class="item"><i class="fas fa-bed"></i> <strong>Комнат:</strong> 4</div>
+                            </div>
+                            <div class="order-card-footer">
+                                <div class="price">89 000 000 ₽ <small>с НДС</small></div>
+                                <div class="order-actions">
+                                    <button class="btn-detail" onclick="showToast('📄 Детали заказа #GSP-2026-001')">Подробнее</button>
+                                    <button class="btn-repeat" onclick="showToast('📞 Связь с менеджером')">Связаться</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Заказ 2 -->
+                        <div class="order-card" data-status="pending">
+                            <div class="order-card-header">
+                                <div class="order-id">Заказ #<span>GSP-2026-002</span></div>
+                                <span class="order-status pending">В обработке</span>
+                            </div>
+                            <div class="order-card-body">
+                                <div class="item"><i class="fas fa-home"></i> Вилла Forest House</div>
+                                <div class="item"><i class="fas fa-calendar-alt"></i> <strong>Дата:</strong> 10.06.2026</div>
+                                <div class="item"><i class="fas fa-ruler-combined"></i> <strong>Площадь:</strong> 420 м²</div>
+                                <div class="item"><i class="fas fa-tree"></i> <strong>Участок:</strong> 12 соток</div>
+                            </div>
+                            <div class="order-card-footer">
+                                <div class="price">275 000 000 ₽ <small>с НДС</small></div>
+                                <div class="order-actions">
+                                    <button class="btn-detail" onclick="showToast('📄 Детали заказа #GSP-2026-002')">Подробнее</button>
+                                    <button class="btn-repeat" onclick="showToast('📞 Связь с менеджером')">Связаться</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Заказ 3 -->
+                        <div class="order-card" data-status="completed">
+                            <div class="order-card-header">
+                                <div class="order-id">Заказ #<span>GSP-2026-003</span></div>
+                                <span class="order-status completed">Завершён</span>
+                            </div>
+                            <div class="order-card-body">
+                                <div class="item"><i class="fas fa-city"></i> Пентхаус «Золотая линия»</div>
+                                <div class="item"><i class="fas fa-calendar-alt"></i> <strong>Дата:</strong> 05.05.2026</div>
+                                <div class="item"><i class="fas fa-ruler-combined"></i> <strong>Площадь:</strong> 267 м²</div>
+                                <div class="item"><i class="fas fa-sun"></i> <strong>Терраса:</strong> 45 м²</div>
+                            </div>
+                            <div class="order-card-footer">
+                                <div class="price">149 000 000 ₽ <small>с НДС</small></div>
+                                <div class="order-actions">
+                                    <button class="btn-detail" onclick="showToast('📄 Детали заказа #GSP-2026-003')">Подробнее</button>
+                                    <button class="btn-repeat" onclick="showToast('🔄 Повторить заказ (демо)')">Повторить</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Заказ 4 -->
+                        <div class="order-card" data-status="active">
+                            <div class="order-card-header">
+                                <div class="order-id">Заказ #<span>GSP-2026-004</span></div>
+                                <span class="order-status active">Активный</span>
+                            </div>
+                            <div class="order-card-body">
+                                <div class="item"><i class="fas fa-door-open"></i> Лофт «Архитектон»</div>
+                                <div class="item"><i class="fas fa-calendar-alt"></i> <strong>Дата:</strong> 15.05.2026</div>
+                                <div class="item"><i class="fas fa-ruler-combined"></i> <strong>Площадь:</strong> 112 м²</div>
+                                <div class="item"><i class="fas fa-arrow-up"></i> <strong>Высота:</strong> 5 м</div>
+                            </div>
+                            <div class="order-card-footer">
+                                <div class="price">42 500 000 ₽ <small>с НДС</small></div>
+                                <div class="order-actions">
+                                    <button class="btn-detail" onclick="showToast('📄 Детали заказа #GSP-2026-004')">Подробнее</button>
+                                    <button class="btn-repeat" onclick="showToast('📞 Связь с менеджером')">Связаться</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Заказ 5 -->
+                        <div class="order-card" data-status="cancelled">
+                            <div class="order-card-header">
+                                <div class="order-id">Заказ #<span>GSP-2026-005</span></div>
+                                <span class="order-status cancelled">Отменён</span>
+                            </div>
+                            <div class="order-card-body">
+                                <div class="item"><i class="fas fa-building"></i> Таунхаус «Матовое золото»</div>
+                                <div class="item"><i class="fas fa-calendar-alt"></i> <strong>Дата:</strong> 20.04.2026</div>
+                                <div class="item"><i class="fas fa-ruler-combined"></i> <strong>Площадь:</strong> 210 м²</div>
+                                <div class="item"><i class="fas fa-bed"></i> <strong>Спальни:</strong> 3</div>
+                            </div>
+                            <div class="order-card-footer">
+                                <div class="price">64 900 000 ₽ <small>с НДС</small></div>
+                                <div class="order-actions">
+                                    <button class="btn-detail" onclick="showToast('📄 Детали заказа #GSP-2026-005')">Подробнее</button>
+                                    <button class="btn-repeat" onclick="showToast('🔄 Повторить заказ (демо)')">Повторить</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Заказ 6 -->
+                        <div class="order-card" data-status="completed">
+                            <div class="order-card-header">
+                                <div class="order-id">Заказ #<span>GSP-2026-006</span></div>
+                                <span class="order-status completed">Завершён</span>
+                            </div>
+                            <div class="order-card-body">
+                                <div class="item"><i class="fas fa-city"></i> Апартаменты «Небо»</div>
+                                <div class="item"><i class="fas fa-calendar-alt"></i> <strong>Дата:</strong> 01.03.2026</div>
+                                <div class="item"><i class="fas fa-ruler-combined"></i> <strong>Площадь:</strong> 95 м²</div>
+                                <div class="item"><i class="fas fa-bed"></i> <strong>Спальни:</strong> 2</div>
+                            </div>
+                            <div class="order-card-footer">
+                                <div class="price">37 800 000 ₽ <small>с НДС</small></div>
+                                <div class="order-actions">
+                                    <button class="btn-detail" onclick="showToast('📄 Детали заказа #GSP-2026-006')">Подробнее</button>
+                                    <button class="btn-repeat" onclick="showToast('🔄 Повторить заказ (демо)')">Повторить</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== ФУТЕР ===== -->
+    <div class="container">
+        <div class="footer">
+            <div class="footer-col">
+                <h3 style="font-weight: 600;">GALLERY OF SPACES</h3>
+                <div class="gold-divider"></div>
+                <p>© 2026 Премиум агентство<br>Архитектурная галерея пространств</p>
+            </div>
+            <div class="footer-col social-icons">
+                <i class="fab fa-telegram"></i>
+                <i class="fab fa-instagram"></i>
+                <i class="fab fa-behance"></i>
+                <div class="gold-divider"></div>
+                <p>+7 (495) 999-23-23<br>hello@gallery-spaces.com</p>
+            </div>
+            <div class="footer-col">
+                <p style="font-weight: 500;">Работаем с токенами, криптовалютой, эскроу</p>
+                <div class="gold-divider"></div>
+                <p style="font-size: 0.7rem;">Лицензия № 7892</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== TOAST ===== -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // =============================================
+        // ПОКАЗ TOAST
+        // =============================================
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message || '✅ Успешно!';
+            toast.classList.add('show');
+            clearTimeout(toast._timeout);
+            toast._timeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // =============================================
+        // ФИЛЬТРАЦИЯ ЗАКАЗОВ
+        // =============================================
+        const filterButtons = document.querySelectorAll('.filter-tabs button');
+        const orderCards = document.querySelectorAll('.order-card');
+
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Активная кнопка
+                filterButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const filter = btn.dataset.filter;
+
+                orderCards.forEach(card => {
+                    const status = card.dataset.status;
+                    if (filter === 'all' || status === filter) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                // Показываем уведомление
+                const filterNames = {
+                    'all': 'все заказы',
+                    'active': 'активные заказы',
+                    'pending': 'заказы в обработке',
+                    'completed': 'завершённые заказы',
+                    'cancelled': 'отменённые заказы'
+                };
+                showToast(`🔍 Показаны ${filterNames[filter] || filter}`);
+            });
+        });
+
+        // =============================================
+        // КЛИК НА КАРТОЧКУ ЗАКАЗА
+        // =============================================
+        document.querySelectorAll('.order-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                // Игнорируем клики по кнопкам внутри карточки
+                if (e.target.closest('button')) return;
+                const id = card.querySelector('.order-id span')?.textContent || 'заказ';
+                showToast(`📄 Открыт заказ #${id}`);
+            });
+        });
+
+        // =============================================
+        // КЛИК НА КНОПКУ "+" В ШАПКЕ
+        // =============================================
+        document.querySelector('.btn-gold-circle').addEventListener('click', () => {
+            showToast('📞 Свяжитесь с нами: +7 (495) 999-23-23');
+        });
+
+        // =============================================
+        // КЛИК НА АВАТАР
+        // =============================================
+        document.querySelector('.user-avatar').addEventListener('click', () => {
+            showToast('👤 Профиль пользователя');
+        });
+
+        // =============================================
+        // КЛИК ПО МЕНЮ САЙДБАРА
+        // =============================================
+        document.querySelectorAll('.profile-menu a:not(.active)').forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                const text = item.textContent.trim();
+                showToast(`🔹 Переход в раздел "${text}" (демо)`);
+            });
+        });
+
+        // =============================================
+        // ВЫХОД
+        // =============================================
+        document.querySelector('.logout-btn a').addEventListener('click', (e) => {
+            e.preventDefault();
+            if (confirm('Вы уверены, что хотите выйти?')) {
+                showToast('👋 Вы вышли из системы');
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 1500);
+            }
+        });
+    </script>
+</body>
+</html>
