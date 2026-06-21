@@ -56,3 +56,24 @@ docker compose exec php npm run build
 - `/apartments`, `/purchase`, `/rent`, `/izhs`, `/renovation` — каталоги
 - `/home-staging` — хоумстейджинг
 - `/admin` — админ-панель
+
+
+## На сервере (один раз, вне GitHub)
+1. Установить Docker и Git.
+2. Клонировать репозиторий в DEPLOY_PATH:
+
+```shell
+git clone git@github.com:werwolf1000/gallery.git /var/www/gallery
+```
+3. Создать .env из .env.example и задать:
+
+   - APP_KEY — php artisan key:generate
+   - APP_URL — ваш домен
+   - DB_PASSWORD, DB_ROOT_PASSWORD
+   - SANCTUM_STATEFUL_DOMAINS — ваш домен (без http://)
+
+4. Первый запуск:
+```shell
+cd /var/www/gallery
+bash scripts/deploy.sh
+```
