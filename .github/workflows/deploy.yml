@@ -3,6 +3,7 @@ name: Deploy
 on:
   push:
     branches: [main, master]
+  workflow_dispatch:
 
 concurrency:
   group: deploy-production
@@ -52,6 +53,9 @@ jobs:
   deploy:
     needs: test
     runs-on: ubuntu-latest
+    # SSH-деплой только когда включён в Settings → Variables → DEPLOY_ENABLED=true
+    # и заданы секреты DEPLOY_* (см. docs/DEPLOY.md)
+    if: vars.DEPLOY_ENABLED == 'true'
 
     steps:
       - name: Deploy to server via SSH
@@ -60,7 +64,7 @@ jobs:
           host: ${{ secrets.DEPLOY_HOST }}
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_KEY }}
-          port: ${{ secrets.DEPLOY_PORT }}
+          port: ${{ secrets.DEPLOY_PORT || 22 }}
           script: |
             set -euo pipefail
             export DEPLOY_PATH="${{ secrets.DEPLOY_PATH }}"

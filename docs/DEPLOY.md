@@ -58,6 +58,14 @@ bash scripts/deploy.sh
 | `DEPLOY_PATH` | Путь на сервере, например `/var/www/gallery` |
 | `DEPLOY_PORT` | SSH-порт (обычно `22`) |
 
+**Variable** (Settings → Secrets and variables → Actions → Variables):
+
+| Variable | Значение |
+|----------|----------|
+| `DEPLOY_ENABLED` | `true` — включить автодеплой при push в `main` |
+
+> Пока переменная `DEPLOY_ENABLED` не установлена в `true`, при push выполняются только тесты — SSH-деплой не запускается (нет ошибки «missing server host»).
+
 ### SSH-ключ для деплоя
 
 На своей машине:

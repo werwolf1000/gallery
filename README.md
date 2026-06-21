@@ -28,7 +28,21 @@ docker compose exec php npm run build
 
 ### Секреты GitHub Actions
 
-`DEPLOY_HOST`, `DEPLOY_USER`, `DEPLOY_KEY`, `DEPLOY_PATH`, `DEPLOY_PORT`
+| Secret | Описание |
+|--------|----------|
+| `DEPLOY_HOST` | IP или домен сервера |
+| `DEPLOY_USER` | SSH-пользователь |
+| `DEPLOY_KEY` | Приватный SSH-ключ |
+| `DEPLOY_PATH` | Путь на сервере, например `/var/www/gallery` |
+| `DEPLOY_PORT` | SSH-порт (обычно `22`) |
+
+**Variable** (Settings → Secrets and variables → Actions → Variables):
+
+| Variable | Значение |
+|----------|----------|
+| `DEPLOY_ENABLED` | `true` — включить автодеплой при push в `main` |
+
+Пока `DEPLOY_ENABLED` не задан, workflow **Deploy** выполняет только тесты сборки, SSH-шаг пропускается. Ручной деплой: Actions → Deploy → Run workflow.
 
 ## Стек
 
