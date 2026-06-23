@@ -1,6 +1,6 @@
 <script setup>
-import { onMounted, ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { nextTick, onMounted, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 import SiteHeader from '../../components/SiteHeader.vue';
@@ -13,6 +13,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
 const router = useRouter();
+const route = useRoute();
 const modules = [Autoplay, Navigation, Pagination];
 const properties = ref([]);
 const slides = ref([]);
@@ -69,6 +70,11 @@ onMounted(async () => {
     ]);
     properties.value = propertiesRes.data.slice(0, 6);
     slides.value = slidesRes.data;
+
+    if (route.hash) {
+        await nextTick();
+        document.querySelector(route.hash)?.scrollIntoView({ behavior: 'smooth' });
+    }
 });
 
 function openModal(property = null) {

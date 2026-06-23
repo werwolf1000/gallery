@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Order;
 use App\Models\Property;
 use App\Models\SliderSlide;
+use App\Models\Survey;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -12,13 +13,15 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        $admin = User::create([
-            'name' => 'Администратор',
-            'email' => 'admin@gallery.local',
-            'password' => 'password',
-            'role' => 'admin',
-            'phone' => '+7 (999) 000-00-01',
-        ]);
+        $admin = User::updateOrCreate(
+            ['email' => 'admin@gallery.local'],
+            [
+                'name' => 'Администратор',
+                'password' => 'password',
+                'role' => 'admin',
+                'phone' => '+7 (999) 000-00-01',
+            ],
+        );
 
         $users = [
             ['name' => 'Александр Иванов', 'email' => 'alex@example.com', 'phone' => '+7 (999) 111-22-33'],
@@ -26,11 +29,14 @@ class DatabaseSeeder extends Seeder
             ['name' => 'Михаил Громов', 'email' => 'mikhail@example.com', 'phone' => '+7 (999) 333-44-55'],
         ];
 
-        $createdUsers = collect($users)->map(fn (array $data) => User::create([
-            ...$data,
-            'password' => 'password',
-            'role' => 'user',
-        ]));
+        $createdUsers = collect($users)->map(fn (array $data) => User::updateOrCreate(
+            ['email' => $data['email']],
+            [
+                ...$data,
+                'password' => 'password',
+                'role' => 'user',
+            ],
+        ));
 
         $properties = [
             [
@@ -185,7 +191,10 @@ class DatabaseSeeder extends Seeder
             ],
         ];
 
-        $createdProperties = collect($properties)->map(fn (array $data) => Property::create($data));
+        $createdProperties = collect($properties)->map(fn (array $data) => Property::updateOrCreate(
+            ['title' => $data['title']],
+            $data,
+        ));
 
         $slides = [
             [
@@ -215,45 +224,103 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($slides as $slide) {
-            SliderSlide::create($slide);
+            SliderSlide::updateOrCreate(['title' => $slide['title']], $slide);
         }
 
-        Order::create([
-            'number' => 'GSP-001',
-            'user_id' => $createdUsers[0]->id,
-            'property_id' => $createdProperties[0]->id,
-            'status' => 'active',
-            'amount' => $createdProperties[0]->price,
-            'bonus' => $createdProperties[0]->bonus,
-            'message' => 'Интересует просмотр объекта',
-        ]);
+        Order::updateOrCreate(
+            ['number' => 'GSP-001'],
+            [
+                'user_id' => $createdUsers[0]->id,
+                'property_id' => $createdProperties[0]->id,
+                'status' => 'active',
+                'amount' => $createdProperties[0]->price,
+                'bonus' => $createdProperties[0]->bonus,
+                'message' => 'Интересует просмотр объекта',
+            ],
+        );
 
-        Order::create([
-            'number' => 'GSP-002',
-            'user_id' => $createdUsers[1]->id,
-            'property_id' => $createdProperties[5]->id,
-            'status' => 'pending',
-            'amount' => $createdProperties[5]->price,
-            'bonus' => $createdProperties[5]->bonus,
-        ]);
+        Order::updateOrCreate(
+            ['number' => 'GSP-002'],
+            [
+                'user_id' => $createdUsers[1]->id,
+                'property_id' => $createdProperties[5]->id,
+                'status' => 'pending',
+                'amount' => $createdProperties[5]->price,
+                'bonus' => $createdProperties[5]->bonus,
+            ],
+        );
 
-        Order::create([
-            'number' => 'GSP-003',
-            'user_id' => $createdUsers[2]->id,
-            'property_id' => $createdProperties[1]->id,
-            'status' => 'completed',
-            'amount' => $createdProperties[1]->price,
-            'bonus' => $createdProperties[1]->bonus,
-        ]);
+        Order::updateOrCreate(
+            ['number' => 'GSP-003'],
+            [
+                'user_id' => $createdUsers[2]->id,
+                'property_id' => $createdProperties[1]->id,
+                'status' => 'completed',
+                'amount' => $createdProperties[1]->price,
+                'bonus' => $createdProperties[1]->bonus,
+            ],
+        );
 
-        Order::create([
-            'number' => 'GSP-004',
-            'user_id' => $createdUsers[0]->id,
-            'property_id' => null,
-            'status' => 'pending',
-            'bonus' => 'Бесплатная консультация для 3-х членов семьи или друзей при заключении договора',
-            'amount' => 0,
-            'message' => 'Активация промо-бонуса с главной страницы',
-        ]);
+        Order::updateOrCreate(
+            ['number' => 'GSP-004'],
+            [
+                'user_id' => $createdUsers[0]->id,
+                'property_id' => null,
+                'status' => 'pending',
+                'bonus' => 'Бесплатная консультация для 3-х членов семьи или друзей при заключении договора',
+                'amount' => 0,
+                'message' => 'Активация промо-бонуса с главной страницы',
+            ],
+        );
+
+        $surveys = [
+            [
+                'title' => 'Удовлетворённость обслуживанием',
+                'description' => 'Оцените качество обслуживания в агентстве. Нам важно ваше мнение!',
+                'status' => 'active',
+                'category' => 'service',
+                'responses_count' => 24,
+                'questions' => [
+                    ['text' => 'Как вы оцениваете качество обслуживания?', 'options' => ['Отлично', 'Хорошо', 'Удовлетворительно']],
+                    ['text' => 'Насколько быстро вы получили ответ на свой запрос?', 'options' => ['Очень быстро', 'Быстро', 'Долго']],
+                ],
+            ],
+            [
+                'title' => 'Качество консультации',
+                'description' => 'Как вы оцениваете работу наших консультантов по недвижимости?',
+                'status' => 'active',
+                'category' => 'consultation',
+                'responses_count' => 18,
+                'questions' => [
+                    ['text' => 'Насколько компетентен был наш консультант?', 'options' => ['Очень компетентен', 'Компетентен', 'Не компетентен']],
+                    ['text' => 'Рекомендуете ли вы наши услуги друзьям?', 'options' => ['Да', 'Нет', 'Возможно']],
+                ],
+            ],
+            [
+                'title' => 'Рекомендации друзьям',
+                'description' => 'Порекомендовали бы вы нас своим друзьям и знакомым?',
+                'status' => 'draft',
+                'category' => 'recommendation',
+                'responses_count' => 0,
+                'questions' => [
+                    ['text' => 'Порекомендовали бы вы нас?', 'options' => ['Обязательно', 'Возможно', 'Нет']],
+                ],
+            ],
+            [
+                'title' => 'Оценка сайта',
+                'description' => 'Оцените удобство и функциональность нашего сайта.',
+                'status' => 'inactive',
+                'category' => 'site',
+                'responses_count' => 12,
+                'questions' => [
+                    ['text' => 'Насколько удобен наш сайт?', 'options' => ['Очень удобен', 'Удобен', 'Неудобен']],
+                    ['text' => 'Что можно улучшить?', 'options' => ['Дизайн', 'Скорость', 'Навигацию']],
+                ],
+            ],
+        ];
+
+        foreach ($surveys as $survey) {
+            Survey::updateOrCreate(['title' => $survey['title']], $survey);
+        }
     }
 }

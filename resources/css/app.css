@@ -2,3 +2,24 @@
 @import './site-pages.css';
 @import './footer.css';
 @import './auth.css';
+
+/* Кнопки в шапке через RouterLink (<a>) */
+a.btn-ghost,
+a.btn-gold-circle {
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+a.btn-gold-circle {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    min-height: 42px;
+    padding: 0;
+    line-height: 1;
+    flex-shrink: 0;
+}

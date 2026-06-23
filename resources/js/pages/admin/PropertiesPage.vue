@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, reactive, ref } from 'vue';
 import api, { formatDate, formatPrice, propertyStatusLabels } from '../../api';
 import { getCategoryLabel, propertyCategoryOptions } from '../../config/propertyCategories';
 
@@ -9,6 +9,15 @@ const saving = ref(false);
 const editing = ref(null);
 const error = ref('');
 const form = ref(emptyForm());
+const viewMode = ref(localStorage.getItem('adminPropertiesView') || 'grid');
+
+const filters = reactive({
+    search: '',
+    category: '',
+    status: '',
+});
+
+const sortBy = ref('sort_order');
 
 function emptyForm() {
     return {
@@ -32,6 +41,48 @@ function emptyForm() {
 
 const previewStatus = computed(() => propertyStatusLabels[form.value.status] || form.value.status);
 
+const filteredProperties = computed(() => {
+    let items = [...properties.value];
+    const query = filters.search.trim().toLowerCase();
+
+    if (query) {
+        items = items.filter((property) =>
+            property.title.toLowerCase().includes(query)
+            || property.address.toLowerCase().includes(query),
+        );
+    }
+
+    if (filters.category) {
+        items = items.filter((property) => property.category === filters.category);
+    }
+
+    if (filters.status) {
+        items = items.filter((property) => property.status === filters.status);
+    }
+
+    items.sort((a, b) => {
+        switch (sortBy.value) {
+            case 'price_asc':
+                return a.price - b.price;
+            case 'price_desc':
+                return b.price - a.price;
+            case 'title_asc':
+                return a.title.localeCompare(b.title, 'ru');
+            case 'title_desc':
+                return b.title.localeCompare(a.title, 'ru');
+            case 'updated_desc':
+                return new Date(b.updated_at) - new Date(a.updated_at);
+            case 'updated_asc':
+                return new Date(a.updated_at) - new Date(b.updated_at);
+            case 'sort_order':
+            default:
+                return (a.sort_order ?? 0) - (b.sort_order ?? 0);
+        }
+    });
+
+    return items;
+});
+
 async function load() {
     loading.value = true;
     try {
@@ -43,6 +94,18 @@ async function load() {
 }
 
 onMounted(load);
+
+function setViewMode(mode) {
+    viewMode.value = mode;
+    localStorage.setItem('adminPropertiesView', mode);
+}
+
+function resetFilters() {
+    filters.search = '';
+    filters.category = '';
+    filters.status = '';
+    sortBy.value = 'sort_order';
+}
 
 function openEditor(property = null) {
     error.value = '';
@@ -102,16 +165,74 @@ async function remove(property) {
                 </div>
             </div>
 
-            <div class="properties-grid">
-                <div v-if="loading">Загрузка...</div>
+            <div class="properties-toolbar">
+                <div class="properties-filters">
+                    <input
+                        v-model="filters.search"
+                        class="search-input"
+                        type="search"
+                        placeholder="Поиск по названию или адресу..."
+                    >
+                    <select v-model="filters.category">
+                        <option value="">Все группы</option>
+                        <option v-for="option in propertyCategoryOptions" :key="option.value" :value="option.value">
+                            {{ option.label }}
+                        </option>
+                    </select>
+                    <select v-model="filters.status">
+                        <option value="">Все статусы</option>
+                        <option v-for="(label, value) in propertyStatusLabels" :key="value" :value="value">
+                            {{ label }}
+                        </option>
+                    </select>
+                    <select v-model="sortBy">
+                        <option value="sort_order">Сортировка: порядок</option>
+                        <option value="price_desc">Цена ↓</option>
+                        <option value="price_asc">Цена ↑</option>
+                        <option value="title_asc">Название А–Я</option>
+                        <option value="title_desc">Название Я–А</option>
+                        <option value="updated_desc">Обновлено ↓</option>
+                        <option value="updated_asc">Обновлено ↑</option>
+                    </select>
+                    <button class="btn-outline" type="button" @click="resetFilters">Сбросить</button>
+                </div>
+                <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+                    <span class="properties-toolbar-meta">
+                        Показано {{ filteredProperties.length }} из {{ properties.length }}
+                    </span>
+                    <div class="view-toggle">
+                        <button
+                            type="button"
+                            :class="{ active: viewMode === 'grid' }"
+                            @click="setViewMode('grid')"
+                        >
+                            <i class="fas fa-th-large"></i> Карточки
+                        </button>
+                        <button
+                            type="button"
+                            :class="{ active: viewMode === 'list' }"
+                            @click="setViewMode('list')"
+                        >
+                            <i class="fas fa-list"></i> Список
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div v-if="loading" class="properties-empty">Загрузка...</div>
+
+            <div v-else-if="!filteredProperties.length" class="properties-empty">
+                Объекты не найдены. Измените фильтры или создайте новую карточку.
+            </div>
+
+            <div v-else-if="viewMode === 'grid'" class="properties-grid">
                 <div
-                    v-for="property in properties"
-                    v-else
+                    v-for="property in filteredProperties"
                     :key="property.id"
                     class="property-card-item"
                     @click="openEditor(property)"
                 >
-                    <div class="pci-img" :style="{ backgroundImage: `url('${property.image_url}')` }">
+                    <div class="pci-img" :style="{ backgroundImage: property.image_url ? `url('${property.image_url}')` : 'none' }">
                         <span :class="['pci-status', property.status === 'sold' ? 'sold' : '']">
                             {{ propertyStatusLabels[property.status] || property.status }}
                         </span>
@@ -134,6 +255,64 @@ async function remove(property) {
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div v-else class="properties-list-wrap">
+                <table class="properties-table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Объект</th>
+                            <th>Группа</th>
+                            <th>Площадь</th>
+                            <th>Цена</th>
+                            <th>Статус</th>
+                            <th>Обновлено</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr
+                            v-for="property in filteredProperties"
+                            :key="property.id"
+                            @click="openEditor(property)"
+                        >
+                            <td>
+                                <div
+                                    class="pt-thumb"
+                                    :style="{ backgroundImage: property.image_url ? `url('${property.image_url}')` : 'none' }"
+                                ></div>
+                            </td>
+                            <td>
+                                <div class="pt-title">{{ property.title }}</div>
+                                <div class="pt-sub">{{ property.address }}</div>
+                            </td>
+                            <td>{{ getCategoryLabel(property.category) }}</td>
+                            <td>
+                                <span v-if="property.area">{{ property.area }} м²</span>
+                                <span v-if="property.rooms"> · {{ property.rooms }} комн.</span>
+                                <span v-if="!property.area && !property.rooms">—</span>
+                            </td>
+                            <td><strong>{{ formatPrice(property.price) }}</strong></td>
+                            <td>
+                                <span :class="['pt-status', property.status]">
+                                    {{ propertyStatusLabels[property.status] || property.status }}
+                                </span>
+                            </td>
+                            <td>{{ formatDate(property.updated_at) }}</td>
+                            <td>
+                                <div class="pt-actions" @click.stop>
+                                    <button class="pci-edit" type="button" @click="openEditor(property)">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="pci-delete" type="button" @click="remove(property)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
 

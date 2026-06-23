@@ -40,3 +40,17 @@ export const propertyStatusLabels = {
     sold: 'Продано',
     archive: 'Архив',
 };
+
+export const surveyStatusLabels = {
+    active: 'Активен',
+    draft: 'Черновик',
+    inactive: 'Неактивен',
+};
+
+export const surveyCategoryLabels = {
+    service: 'Качество обслуживания',
+    consultation: 'Консультация',
+    site: 'Оценка сайта',
+    recommendation: 'Рекомендации',
+    other: 'Другое',
+};

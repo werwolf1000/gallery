@@ -40,5 +40,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/slides', [AdminController::class, 'storeSlide']);
         Route::patch('/slides/{slide}', [AdminController::class, 'updateSlide']);
         Route::delete('/slides/{slide}', [AdminController::class, 'destroySlide']);
+
+        Route::get('/surveys', [AdminController::class, 'surveys']);
+        Route::post('/surveys', [AdminController::class, 'storeSurvey']);
+        Route::patch('/surveys/{survey}', [AdminController::class, 'updateSurvey']);
+        Route::delete('/surveys/{survey}', [AdminController::class, 'destroySurvey']);
     });
 });

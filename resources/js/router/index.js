@@ -14,7 +14,17 @@ const catalogRoutes = CATALOG_CATEGORY_SLUGS.map((slug) => {
 
 const router = createRouter({
     history: createWebHistory(),
-    scrollBehavior() {
+    scrollBehavior(to, _from, savedPosition) {
+        if (to.hash) {
+            return {
+                el: to.hash,
+                behavior: 'smooth',
+                top: 100,
+            };
+        }
+        if (savedPosition) {
+            return savedPosition;
+        }
         return { top: 0 };
     },
     routes: [
@@ -33,6 +43,11 @@ const router = createRouter({
             path: '/home-staging',
             name: 'home-staging',
             component: () => import('../pages/site/HomeStagingPage.vue'),
+        },
+        {
+            path: '/about',
+            name: 'about',
+            component: () => import('../pages/site/AboutPage.vue'),
         },
         {
             path: '/login',
@@ -67,6 +82,11 @@ const router = createRouter({
                     path: 'users',
                     name: 'admin-users',
                     component: () => import('../pages/admin/UsersPage.vue'),
+                },
+                {
+                    path: 'surveys',
+                    name: 'admin-surveys',
+                    component: () => import('../pages/admin/SurveysPage.vue'),
                 },
                 {
                     path: 'properties',

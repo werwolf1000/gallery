@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\Property;
 use App\Models\SliderSlide;
+use App\Models\Survey;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -145,6 +146,46 @@ class AdminController extends Controller
         $slide->delete();
 
         return response()->json(['message' => 'Слайд удалён']);
+    }
+
+    public function surveys(): JsonResponse
+    {
+        return response()->json(Survey::latest()->get());
+    }
+
+    public function storeSurvey(Request $request): JsonResponse
+    {
+        $survey = Survey::create($this->validateSurvey($request));
+
+        return response()->json($survey, 201);
+    }
+
+    public function updateSurvey(Request $request, Survey $survey): JsonResponse
+    {
+        $survey->update($this->validateSurvey($request));
+
+        return response()->json($survey);
+    }
+
+    public function destroySurvey(Survey $survey): JsonResponse
+    {
+        $survey->delete();
+
+        return response()->json(['message' => 'Опрос удалён']);
+    }
+
+    private function validateSurvey(Request $request): array
+    {
+        return $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string'],
+            'status' => ['required', 'string', Rule::in(array_keys(Survey::STATUSES))],
+            'category' => ['required', 'string', Rule::in(array_keys(Survey::CATEGORIES))],
+            'questions' => ['required', 'array', 'min:1'],
+            'questions.*.text' => ['required', 'string', 'max:500'],
+            'questions.*.options' => ['required', 'array', 'min:1'],
+            'questions.*.options.*' => ['required', 'string', 'max:255'],
+        ]);
     }
 
     private function validateProperty(Request $request): array
